@@ -12,7 +12,7 @@ function createThCell(content, options = {}) {
       th.textContent = content;
     }
     return th;
-  }
+}
 
   function createTdCell(content, options = {}) {
     const td = document.createElement('td');
@@ -153,9 +153,45 @@ function createThCell(content, options = {}) {
         return [];
     }
  }
+ function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+function setLeaderboardTitle(titleText) {
+    const titleElement = document.getElementById("leaderboardTitle");
+    if (titleElement) {
+        titleElement.innerHTML = titleText;
+    } else {
+        console.warn("Element with id 'leaderboardTitle' not found.");
+    }
+}
+
 
   async function loadLeaderboard() {
-    const exampleData = await getData("http://127.0.0.1:5000/percentileleaderboard");
+    const leaderBoardEndpoint = getQueryParam("leaderboardendpoint");
+    if (leaderBoardEndpoint === null) {
+      leaderBoardEndpoint = "trueskill"; // Default to trueskill if no param provided
+    }
+
+    if (leaderBoardEndpoint === "trueskill") {
+      setLeaderboardTitle("Trueskill Leaderboard")
+    }
+    else if (leaderBoardEndpoint === "percentile") {
+      setLeaderboardTitle("Percentile Leaderboard")
+    }
+    else if (leaderBoardEndpoint === "placement") {
+      setLeaderboardTitle("Average Placement Leaderboard")
+    }
+    else if (leaderBoardEndpoint === "percentilenoroundlimit") {
+      setLeaderboardTitle("Percentile Leaderboard no round limit")
+    }
+    else if (leaderBoardEndpoint === "roi") {
+      setLeaderboardTitle("Average Return On Investment Leaderboard")
+    }
+    const domain = "https://offsuitpokeranalyzer-exe2hvg3hwafc9fb.canadacentral-01.azurewebsites.net"
+    const localDomain = "http://127.0.0.1:5000/"
+    const exampleData = await getData(domain + "/api/leaderboard/" + leaderBoardEndpoint);
+
     if (exampleData.length === 0) {
         console.warn('No data to display');
         return;
@@ -167,4 +203,6 @@ function createThCell(content, options = {}) {
     buildTableHeader(columns);
     buildTableBody(exampleData, columns);
  }
+
+//this is the main run point for the script
 loadLeaderboard();
