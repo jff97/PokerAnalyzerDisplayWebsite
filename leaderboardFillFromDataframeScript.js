@@ -81,7 +81,7 @@ function createThCell(content, options = {}) {
     columns.forEach(col => {
       // For Rank column, keep special style & scope
       if (col === 'Rank') {
-        tr.appendChild(createThCell(col, {
+        tr.appendChild(createThCell("", {
           classes: 'py-2 text-center fw-bold rank align-middle',
           scope: 'col',
           isSpan: true,
