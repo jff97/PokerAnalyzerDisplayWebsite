@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Tiny's A Neighborhood Sports Tavern</title>
+    <meta name="description" content="Poker Scoreboard and Leaderboard">
+    
+    <!-- Core CSS Files -->
+    <link rel="stylesheet" type="text/css" href="./Tiny's A Neighborhood Sports Tavern_files/scorekeeper-CG6ZTgm6.css">
+    <link rel="stylesheet" href="./Tiny's A Neighborhood Sports Tavern_files/bootstrap-icons.css">
+    <link rel="stylesheet" crossorigin="" href="./Tiny's A Neighborhood Sports Tavern_files/ScoresheetComponent-DHbPH0O7.css">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://keepthescore.com/static/favicon.ico">
+    
+</head>
+
+<body id="body-handle" class="themeable POKER">
+    <main class="">
+        <div id="app" data-v-app="">
+            <div data-v-351c3a15="" id="content" class="">
+                <div data-v-351c3a15="">
+                    <div data-v-351c3a15="">
+                        <div data-v-351c3a15="" class="container text-center mt-3"></div>
+                        <div data-v-b4d32c58="" class="container mt-5 d-flex flex-column">
+                            <div data-v-b4d32c58="">
+                                <img data-v-b4d32c58="" id="header-image" class="img-fluid mx-auto d-block mb-3" src="./Tiny's A Neighborhood Sports Tavern_files/image_tvqqrxjkkxvkr_4930687.png" width="400" alt="Leaderboard logo">
+                            </div>
+                            <div data-v-b4d32c58="" class="dynamic-width p-3 mb-2 card score-card title-card card-elevated">
+                                <div data-v-b4d32c58="" class="text-center">
+                                    <div data-v-52a3f3b4="" data-v-b4d32c58="" class="editable-wrapper px-2 py-1">
+                                        <h1 data-v-b4d32c58="">Tiny's A Neighborhood Sports Tavern</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div data-v-7feebe05="" data-v-351c3a15="" class="container mb-3">
+                            <div data-v-7feebe05="">
+                                <div data-v-7feebe05="" class="content-box table-responsive scroll-shadow">
+                                    <table data-v-7feebe05="" class="table table-borderless m-0 no-ads w-100 themed-l2">
+                                        <thead data-v-7feebe05="">
+                                            
+                                        </thead>
+                                        <tbody data-v-7feebe05="" class="stripey-table">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="spacer" class="my-3">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+  function createThCell(content, options = {}) {
+    const th = document.createElement('th');
+    if (options.id) th.id = options.id;
+    if (options.classes) th.className = options.classes;
+    if (options.scope) th.scope = options.scope;
+    if (options.isSpan) {
+      const span = document.createElement('span');
+      if (options.spanClasses) span.className = options.spanClasses;
+      span.textContent = content;
+      th.appendChild(span);
+    } else {
+      th.textContent = content;
+    }
+    return th;
+  }
+
+  function createTdCell(content, options = {}) {
+    const td = document.createElement('td');
+    if (options.id) td.id = options.id;
+    if (options.classes) td.className = options.classes;
+
+    if (options.isDivWrapper) {
+      const div = document.createElement('div');
+      if (options.divClasses) div.className = options.divClasses;
+
+      if (options.isSpan) {
+        const span = document.createElement('span');
+        if (options.spanClasses) span.className = options.spanClasses;
+        span.textContent = content;
+        div.appendChild(span);
+      } else {
+        div.textContent = content;
+      }
+      td.appendChild(div);
+    } else if (options.isSpan) {
+      const span = document.createElement('span');
+      if (options.spanClasses) span.className = options.spanClasses;
+      span.textContent = content;
+      td.appendChild(span);
+    } else {
+      td.textContent = content;
+    }
+    return td;
+  }
+
+  function createRankCell(rank, index) {
+    return createThCell(rank, {
+      id: `rank-${index}`,
+      classes: 'py-2 text-center fw-bold rank align-middle',
+      scope: 'row',
+      isSpan: true,
+    });
+  }
+
+  function createPlayerCell(playerName, index) {
+    const td = document.createElement('td');
+    td.id = `player-${index}`;
+    td.className = 'text-start align-middle';
+
+    const div = document.createElement('div');
+    div.className = 'editable-wrapper d-flex table-header-label d-flex px-2 py-1';
+
+    const span = document.createElement('span');
+    span.className = 'player-name';
+    span.textContent = playerName;
+
+    div.appendChild(span);
+    td.appendChild(div);
+
+    return td;
+  }
+
+  // Build table header dynamically from columns
+  function buildTableHeader(columns) {
+    const thead = document.querySelector('table thead');
+    thead.innerHTML = '';
+
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-v-7feebe05', '');
+
+    columns.forEach(col => {
+      // For Rank column, keep special style & scope
+      if (col === 'Rank') {
+        tr.appendChild(createThCell(col, {
+          classes: 'py-2 text-center fw-bold rank align-middle',
+          scope: 'col',
+          isSpan: true,
+        }));
+      } else if (col === 'Player') {
+        tr.appendChild(createThCell(col, {
+          classes: 'table-header text-start',
+          scope: 'col',
+          isSpan: true,
+        }));
+      } else {
+        tr.appendChild(createThCell(col, {
+          classes: 'text-center',
+          scope: 'col',
+          isSpan: true,
+        }));
+      }
+    });
+
+    thead.appendChild(tr);
+  }
+  
+
+
+
+  // Build table body dynamically from data and columns
+  function buildTableBody(data, columns) {
+    const tbody = document.querySelector('table tbody');
+    tbody.innerHTML = '';
+
+    data.forEach((row, index) => {
+      const tr = document.createElement('tr');
+      tr.setAttribute('data-v-7feebe05', '');
+
+      columns.forEach(col => {
+        let val = row[col];
+
+        // If Rank column missing in data, generate rank as index+1
+        if (col === 'Rank' && val === undefined) val = index + 1;
+
+        if (col === 'Rank') {
+          tr.appendChild(createRankCell(val, index));
+        } else if (col === 'Player') {
+          tr.appendChild(createPlayerCell(val, index));
+        } else {
+          // Regular cell, centered text
+          tr.appendChild(createTdCell(val, {
+            classes: 'align-middle text-center',
+            isSpan: true,
+          }));
+        }
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
+  async function getData(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+        console.error('Network response was not ok', response.statusText);
+        return [];
+        }
+        const data = await response.json();
+        console.log('Fetched data:', data);
+        return data;
+    } catch (error) {
+        console.error('Fetch error:', error);
+        return [];
+    }
+ }
+
+  async function loadLeaderboard() {
+    const exampleData = await getData("http://127.0.0.1:5000/percentileleaderboard");
+    if (exampleData.length === 0) {
+        console.warn('No data to display');
+        return;
+    }
+    
+    let columns = Object.keys(exampleData[0]);
+    if (!columns.includes('Rank')) columns.unshift('Rank');
+
+    buildTableHeader(columns);
+    buildTableBody(exampleData, columns);
+ }
+loadLeaderboard();
+</script>
+
+
+
+
+</body>
+</html>
