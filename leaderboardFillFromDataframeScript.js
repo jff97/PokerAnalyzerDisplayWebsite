@@ -1,64 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Tiny's A Neighborhood Sports Tavern</title>
-    <meta name="description" content="Poker Scoreboard and Leaderboard">
-    
-    <!-- Core CSS Files -->
-    <link rel="stylesheet" type="text/css" href="./Tiny's A Neighborhood Sports Tavern_files/scorekeeper-CG6ZTgm6.css">
-    <link rel="stylesheet" href="./Tiny's A Neighborhood Sports Tavern_files/bootstrap-icons.css">
-    <link rel="stylesheet" crossorigin="" href="./Tiny's A Neighborhood Sports Tavern_files/ScoresheetComponent-DHbPH0O7.css">
-    
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="https://keepthescore.com/static/favicon.ico">
-    
-</head>
-
-<body id="body-handle" class="themeable POKER">
-    <main class="">
-        <div id="app" data-v-app="">
-            <div data-v-351c3a15="" id="content" class="">
-                <div data-v-351c3a15="">
-                    <div data-v-351c3a15="">
-                        <div data-v-351c3a15="" class="container text-center mt-3"></div>
-                        <div data-v-b4d32c58="" class="container mt-5 d-flex flex-column">
-                            <div data-v-b4d32c58="">
-                                <img data-v-b4d32c58="" id="header-image" class="img-fluid mx-auto d-block mb-3" src="./Tiny's A Neighborhood Sports Tavern_files/image_tvqqrxjkkxvkr_4930687.png" width="400" alt="Leaderboard logo">
-                            </div>
-                            <div data-v-b4d32c58="" class="dynamic-width p-3 mb-2 card score-card title-card card-elevated">
-                                <div data-v-b4d32c58="" class="text-center">
-                                    <div data-v-52a3f3b4="" data-v-b4d32c58="" class="editable-wrapper px-2 py-1">
-                                        <h1 data-v-b4d32c58="">Tiny's A Neighborhood Sports Tavern</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div data-v-7feebe05="" data-v-351c3a15="" class="container mb-3">
-                            <div data-v-7feebe05="">
-                                <div data-v-7feebe05="" class="content-box table-responsive scroll-shadow">
-                                    <table data-v-7feebe05="" class="table table-borderless m-0 no-ads w-100 themed-l2">
-                                        <thead data-v-7feebe05="">
-                                            
-                                        </thead>
-                                        <tbody data-v-7feebe05="" class="stripey-table">
-                                            
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div id="spacer" class="my-3">&nbsp;</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    <script>
-  function createThCell(content, options = {}) {
+function createThCell(content, options = {}) {
     const th = document.createElement('th');
     if (options.id) th.id = options.id;
     if (options.classes) th.className = options.classes;
@@ -228,10 +168,3 @@
     buildTableBody(exampleData, columns);
  }
 loadLeaderboard();
-</script>
-
-
-
-
-</body>
-</html>
