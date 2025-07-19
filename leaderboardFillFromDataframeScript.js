@@ -182,7 +182,7 @@ function setLeaderboardTitle(titleText) {
     }
     const domain = "https://offsuitpokeranalyzer-exe2hvg3hwafc9fb.canadacentral-01.azurewebsites.net"
     const localDomain = "http://127.0.0.1:5000/"
-    const exampleData = await getData(localDomain + "/api/leaderboard/" + leaderBoardEndpoint);
+    const exampleData = await getData(domain + "/api/leaderboard/" + leaderBoardEndpoint);
 
     if (exampleData.length === 0) {
         console.warn('No data to display');
