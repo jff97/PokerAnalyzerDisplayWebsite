@@ -105,8 +105,6 @@ function createThCell(content, options = {}) {
   }
   
 
-
-
   // Build table body dynamically from data and columns
   function buildTableBody(data, columns) {
     const tbody = document.querySelector('table tbody');
@@ -177,16 +175,16 @@ function setLeaderboardTitle(titleText) {
       setLeaderboardTitle("Trueskill Leaderboard")
     }
     else if (leaderBoardEndpoint === "percentile") {
-      setLeaderboardTitle("Percentile Leaderboard")
+      setLeaderboardTitle("Average Percent Players Outlasted Leaderboard")
     }
     else if (leaderBoardEndpoint === "placement") {
-      setLeaderboardTitle("Average Placement Leaderboard")
+      setLeaderboardTitle("Average Top 3 percent placement Leaderboard")
     }
     else if (leaderBoardEndpoint === "percentilenoroundlimit") {
-      setLeaderboardTitle("Percentile Leaderboard no round limit")
+      setLeaderboardTitle("Average Percent Players Outlasted Leaderboardno round limit")
     }
     else if (leaderBoardEndpoint === "roi") {
-      setLeaderboardTitle("Average Return On Investment Leaderboard")
+      setLeaderboardTitle("Average Simulated(WSOP style) Return On Investment Leaderboard")
     }
     const domain = "https://offsuitpokeranalyzer-exe2hvg3hwafc9fb.canadacentral-01.azurewebsites.net"
     const localDomain = "http://127.0.0.1:5000/"
