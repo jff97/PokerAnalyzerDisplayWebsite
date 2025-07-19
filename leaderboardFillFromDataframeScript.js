@@ -76,7 +76,6 @@ function createThCell(content, options = {}) {
     thead.innerHTML = '';
 
     const tr = document.createElement('tr');
-    tr.setAttribute('data-v-7feebe05', '');
 
     columns.forEach(col => {
       // For Rank column, keep special style & scope
@@ -112,7 +111,6 @@ function createThCell(content, options = {}) {
 
     data.forEach((row, index) => {
       const tr = document.createElement('tr');
-      tr.setAttribute('data-v-7feebe05', '');
 
       columns.forEach(col => {
         let val = row[col];
@@ -140,14 +138,10 @@ function createThCell(content, options = {}) {
     try {
         const response = await fetch(url);
         if (!response.ok) {
-        console.error('Network response was not ok', response.statusText);
-        return [];
+          return [];
         }
-        const data = await response.json();
-        console.log('Fetched data:', data);
-        return data;
+        return await response.json();
     } catch (error) {
-        console.error('Fetch error:', error);
         return [];
     }
  }
@@ -166,13 +160,13 @@ function setLeaderboardTitle(titleText) {
 
 
   async function loadLeaderboard() {
-    const leaderBoardEndpoint = getQueryParam("leaderboardendpoint");
+    let leaderBoardEndpoint = getQueryParam("leaderboardendpoint");
     if (leaderBoardEndpoint === null) {
       leaderBoardEndpoint = "trueskill"; // Default to trueskill if no param provided
     }
 
     if (leaderBoardEndpoint === "trueskill") {
-      setLeaderboardTitle("Trueskill Leaderboard")
+      setLeaderboardTitle('<a href="https://www.microsoft.com/en-us/research/project/trueskill-ranking-system/" target="_blank" style="display:inline-block; padding:0 0.3em; border-radius:0.2em; text-decoration:none; font-weight:bold;"><span>Trueskill™</span><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.95em; color:#fff; margin-left:0.3em;"></i> <span>by Microsoft Leaderboard</span></a>')
     }
     else if (leaderBoardEndpoint === "percentile") {
       setLeaderboardTitle("Average Percent Players Outlasted Leaderboard")
@@ -184,11 +178,11 @@ function setLeaderboardTitle(titleText) {
       setLeaderboardTitle("Average Percent Players Outlasted Leaderboardno round limit")
     }
     else if (leaderBoardEndpoint === "roi") {
-      setLeaderboardTitle("Average Simulated(WSOP style) Return On Investment Leaderboard")
+      setLeaderboardTitle("Average Simulated (WSOP style) Return On Investment Leaderboard")
     }
     const domain = "https://offsuitpokeranalyzer-exe2hvg3hwafc9fb.canadacentral-01.azurewebsites.net"
     const localDomain = "http://127.0.0.1:5000/"
-    const exampleData = await getData(domain + "/api/leaderboard/" + leaderBoardEndpoint);
+    const exampleData = await getData(localDomain + "/api/leaderboard/" + leaderBoardEndpoint);
 
     if (exampleData.length === 0) {
         console.warn('No data to display');
