@@ -164,7 +164,7 @@ function setTrueSkillDescription() {
             <li>🏆 Ranks players by considering not just wins, but the ranking of the opponents you face.</li>
             <li>🔄 Adjusts your ranking after every game.</li>
             <li>🎮 Used by Xbox Live for popular games like Halo, Call of Duty, Gears of War, Forza, Overwatch, Team Fortress 2, and CS:GO.</li>
-            <li>♟️ Adapted by chess, Go, and board game leagues to track true skill.</li>
+            <li><i class="fa-solid fa-circle-question" style="color:#8bc34a;"></i> Uncertainty value keeps it fair: new players and streaky players get a temporary penalty until they have enough rounds for a reliable ranking.</li>
         </ul>
         <p>
             <strong>Note:</strong> Your TrueSkill score is a <strong>relative skill estimate</strong>, not a point total or winning percentage. Higher means stronger player, but it’s not a direct measure of any one stat.
