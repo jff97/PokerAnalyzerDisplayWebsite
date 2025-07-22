@@ -157,6 +157,29 @@ function setLeaderboardTitle(titleText) {
         console.warn("Element with id 'leaderboardTitle' not found.");
     }
 }
+function setTrueSkillDescription() {
+    const info = `
+        <strong>Why We Use TrueSkill™ for Rankings</strong><br><br>
+        <ul>
+            <li>🏆 Ranks players by considering not just wins, but the ranking of the opponents you face.</li>
+            <li>🔄 Adjusts your ranking after every game.</li>
+            <li>🎮 Used by Xbox Live for popular games like Halo, Call of Duty, Gears of War, Forza, Overwatch, Team Fortress 2, and CS:GO.</li>
+            <li>♟️ Adapted by chess, Go, and board game leagues to track true skill.</li>
+        </ul>
+        <p>
+            <strong>Note:</strong> Your TrueSkill score is a <strong>relative skill estimate</strong>, not a point total or winning percentage. Higher means stronger player, but it’s not a direct measure of any one stat.
+        </p>
+    `;
+    document.getElementById('leaderboardDescription').innerHTML = info;
+}
+function setPercentileDescription() {
+  const info = `
+        <p>
+            For every round a player places ahead of a percentage of other players who played that day. This leaderboard measures on average what percentage of players they place ahead of.
+        </p>
+    `;
+  document.getElementById('leaderboardDescription').innerHTML = info;
+}
 
 
   async function loadLeaderboard() {
@@ -167,9 +190,11 @@ function setLeaderboardTitle(titleText) {
 
     if (leaderBoardEndpoint === "trueskill") {
       setLeaderboardTitle('<a href="https://www.microsoft.com/en-us/research/project/trueskill-ranking-system/" target="_blank" style="display:inline-block; padding:0 0.3em; border-radius:0.2em; text-decoration:none; font-weight:bold;"><span>Trueskill™</span><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.95em; color:#fff; margin-left:0.3em;"></i> <span>by Microsoft Leaderboard</span></a>')
+      setTrueSkillDescription();
     }
     else if (leaderBoardEndpoint === "percentile") {
       setLeaderboardTitle("Average Percent Players Outlasted Leaderboard")
+      setPercentileDescription()
     }
     else if (leaderBoardEndpoint === "placement") {
       setLeaderboardTitle("Average Top 3 percent placement Leaderboard")
