@@ -180,6 +180,24 @@ function setPercentileDescription() {
     `;
   document.getElementById('leaderboardDescription').innerHTML = info;
 }
+// Capitalize first letter of each part of the name in the 'Player' or 'Name' column
+function capitalizeNameFields(data) {
+    if (!Array.isArray(data) || data.length === 0) return;
+    data.forEach(row => {
+        ['Player', 'Name'].forEach(field => {
+            if (typeof row[field] === 'string') {
+                row[field] = capitalizeFullName(row[field]);
+            }
+        });
+    });
+}
+
+// Capitalize each part of a full name string (e.g., first, last, middle)
+function capitalizeFullName(name) {
+    return name.split(' ').map(
+        part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+    ).join(' ');
+}
 
 
   async function loadLeaderboard() {
@@ -208,6 +226,7 @@ function setPercentileDescription() {
     const domain = "https://offsuitpokeranalyzer-exe2hvg3hwafc9fb.canadacentral-01.azurewebsites.net"
     const localDomain = "http://127.0.0.1:5000/"
     const exampleData = await getData(domain + "/api/leaderboard/" + leaderBoardEndpoint);
+    capitalizeNameFields(exampleData);
 
     if (exampleData.length === 0) {
         console.warn('No data to display');
