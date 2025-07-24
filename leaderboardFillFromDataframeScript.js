@@ -223,8 +223,8 @@ function capitalizeFullName(name) {
     else if (leaderBoardEndpoint === "roi") {
       setLeaderboardTitle("Average Simulated (WSOP style) Return On Investment Leaderboard")
     }
-    const domain = "https://offsuitpokeranalyzer-exe2hvg3hwafc9fb.canadacentral-01.azurewebsites.net"
-    const localDomain = "http://127.0.0.1:5000/"
+    const domain = "https://api.johnfoxweb.com"
+    const localDomain = "http://127.0.0.1:5000"
     const exampleData = await getData(domain + "/api/leaderboard/" + leaderBoardEndpoint);
     capitalizeNameFields(exampleData);
 
