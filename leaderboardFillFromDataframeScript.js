@@ -317,7 +317,7 @@ function showLeaderboardMenu() {
     
     const domain = "https://api.johnfoxweb.com"
     const localDomain = "http://127.0.0.1:5000"
-    const exampleData = await getData(localDomain + "/api/leaderboard/" + leaderBoardEndpoint);
+    const exampleData = await getData(domain + "/api/leaderboard/" + leaderBoardEndpoint);
     capitalizeNameFields(exampleData);
 
     if (exampleData.length === 0) {
