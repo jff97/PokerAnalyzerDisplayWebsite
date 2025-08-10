@@ -161,24 +161,83 @@ function setTrueSkillDescription() {
     const info = `
         <strong>Why We Use TrueSkill™ for Rankings</strong><br><br>
         <ul>
-            <li>🏆 Ranks players by considering not just wins, but the ranking of the opponents you face.</li>
-            <li>🔄 Adjusts your ranking after every game.</li>
-            <li>🎮 Used by Xbox Live for popular games like Halo, Call of Duty, Gears of War, Forza, Overwatch, Team Fortress 2, and CS:GO.</li>
-            <li><i class="fa-solid fa-circle-question" style="color:#8bc34a;"></i> Uncertainty value keeps it fair: new players and streaky players get a temporary penalty until they have enough rounds for a reliable ranking.</li>
+            <li>🏆 Considers both your placement in the round and the ranking of opponents you faced to determine your rank.</li>
+            <li>🔄 Adjusts your ranking after every game you play.</li>
+            <li>🎮 Used for competitive matchmaking in popular games like Halo, Call of Duty, Gears of War, Forza, Overwatch, Team Fortress 2, and CS:GO.</li>
+            <li><i class="fa-solid fa-circle-question" style="color:#8bc34a;"></i> Uncertainty value keeps it fair: new players  get a temporary penalty until they have enough rounds for a reliable ranking. It is a standard deviation value from statistics.</li>
+            <li>🃏 <strong>Adjusted Ranking:</strong> Your TrueSkill rating minus 3 times your uncertainty. This accounts for TrueSkill's uncertainty about your skill level and creates a fair ranking for players with both few and many rounds played. Your uncertainty goes down with more rounds played.</li>
         </ul>
         <p>
-            <strong>Note:</strong> Your TrueSkill score is a <strong>relative skill estimate</strong>, not a point total or winning percentage. Higher means stronger player, but it’s not a direct measure of any one stat.
+            <strong>Note:</strong> Your TrueSkill score is a <strong>relative skill estimate</strong>, not a point total or winning percentage. A higher rank indicates a stronger player, but it's not a direct measure of any one stat.
         </p>
     `;
-    document.getElementById('leaderboardDescription').innerHTML = info;
+    setDescription(info);
 }
 function setPercentileDescription() {
   const info = `
         <p>
             For every round a player places ahead of a percentage of other players who played that day. This leaderboard measures on average what percentage of players they place ahead of.
         </p>
+        ${getMinimumRoundsDisclaimer()}
     `;
-  document.getElementById('leaderboardDescription').innerHTML = info;
+  setDescription(info);
+}
+
+// Helper function to set description content
+function setDescription(content) {
+    document.getElementById('leaderboardDescription').innerHTML = content;
+}
+
+// Helper function for the "no money exchanged" disclaimer
+function getNoMoneyDisclaimer() {
+    return `<p style="border: 2px solid; padding: 8px; margin: 10px 0; font-weight: bold; text-align: center;">
+            ⚠️ No money is exchanged at Offsuit Poker League - this is just a metric. ⚠️
+        </p>`;
+}
+
+// Helper function for minimum rounds filtering disclaimer
+function getMinimumRoundsDisclaimer() {
+    return `<p style="font-style: italic; margin: 10px 0;">
+            📊 Only players with sufficient game history are included to ensure statistical reliability.
+        </p>`;
+}
+
+function setPercentileNoRoundLimitDescription() {
+    setDescription(`
+        <p>
+            Similar to the percentile leaderboard, but includes all rounds without any round limit restrictions. Shows the overall percentage of players outlasted across all games played.
+        </p>
+    `);
+}
+
+function setROIDescription() {
+    setDescription(`
+        <p>
+            World Series of Poker (WSOP) style return on investment calculations measure profitability based on theoretical buy-in versus winnings in standard tournament-style payout structure. Example... If you buy in for $100 and your AVG ROI is 30% then on average you will walk out with $130
+        </p>
+        ${getMinimumRoundsDisclaimer()}
+        ${getNoMoneyDisclaimer()}
+    `);
+}
+
+function setFirstPlaceDescription() {
+    setDescription(`
+        <p>
+            Ranks players by their percentage of first place finishes. Shows who has the most tournament wins. 
+        </p>
+        ${getMinimumRoundsDisclaimer()}
+    `);
+}
+
+function setITMPercentDescription() {
+    setDescription(`
+        <p>
+            In The Money (ITM) percentage shows how often a player would finish in a paying position in a standard tournament payout structure. 
+            On this leaderboard ITM is defined by finishing in the top 20% of the competition.
+        </p>
+        ${getMinimumRoundsDisclaimer()}
+        ${getNoMoneyDisclaimer()}
+    `);
 }
 // Capitalize first letter of each part of the name in the 'Player' or 'Name' column
 function capitalizeNameFields(data) {
@@ -199,11 +258,36 @@ function capitalizeFullName(name) {
     ).join(' ');
 }
 
+// Show menu of available leaderboards when no endpoint is specified
+function showLeaderboardMenu() {
+    setLeaderboardTitle("Choose a Leaderboard");
+    
+    const menuContent = `
+        <p>Select a leaderboard to view:</p>
+        <ul>
+            <li><a href="?leaderboardendpoint=trueskill" target="_blank">TrueSkill™ Leaderboard</a></li>
+            <li><a href="?leaderboardendpoint=percentile" target="_blank">Percent Outlasted Leaderboard</a></li>
+            <li><a href="?leaderboardendpoint=firstplace" target="_blank">First Place Leaderboard</a></li>
+            <li><a href="?leaderboardendpoint=itmpercent" target="_blank">ITM Percentage</a></li>
+            <li><a href="?leaderboardendpoint=roi" target="_blank">ROI Leaderboard</a></li>
+        </ul>
+    `;
+    
+    setDescription(menuContent);
+    
+    // Clear the table since we're showing the menu instead
+    const thead = document.querySelector('table thead');
+    const tbody = document.querySelector('table tbody');
+    if (thead) thead.innerHTML = '';
+    if (tbody) tbody.innerHTML = '';
+}
+
 
   async function loadLeaderboard() {
     let leaderBoardEndpoint = getQueryParam("leaderboardendpoint");
     if (leaderBoardEndpoint === null) {
-      leaderBoardEndpoint = "trueskill"; // Default to trueskill if no param provided
+      showLeaderboardMenu();
+      return;
     }
 
     if (leaderBoardEndpoint === "trueskill") {
@@ -214,15 +298,23 @@ function capitalizeFullName(name) {
       setLeaderboardTitle("Average Percent Players Outlasted Leaderboard")
       setPercentileDescription()
     }
-    else if (leaderBoardEndpoint === "placement") {
-      setLeaderboardTitle("Average Top 3 percent placement Leaderboard")
-    }
     else if (leaderBoardEndpoint === "percentilenoroundlimit") {
       setLeaderboardTitle("Average Percent Players Outlasted Leaderboardno round limit")
+      setPercentileNoRoundLimitDescription();
     }
     else if (leaderBoardEndpoint === "roi") {
       setLeaderboardTitle("Average Simulated (WSOP style) Return On Investment Leaderboard")
+      setROIDescription();
     }
+    else if (leaderBoardEndpoint === "firstplace") {
+      setLeaderboardTitle("First Place Leaderboard")
+      setFirstPlaceDescription();
+    }
+    else if (leaderBoardEndpoint === "itmpercent") {
+      setLeaderboardTitle("ITM Percent Leaderboard")
+      setITMPercentDescription();
+    }
+    
     const domain = "https://api.johnfoxweb.com"
     const localDomain = "http://127.0.0.1:5000"
     const exampleData = await getData(domain + "/api/leaderboard/" + leaderBoardEndpoint);
