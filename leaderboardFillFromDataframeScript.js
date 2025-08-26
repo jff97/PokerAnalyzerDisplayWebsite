@@ -239,6 +239,47 @@ function setITMPercentDescription() {
         ${getNoMoneyDisclaimer()}
     `);
 }
+
+function setNetworkGraphDescription() {
+    setDescription(`
+        <p>
+            Network graph visualization showing player connections and performance relationships. 
+            Enter a player name below to generate their network graph.
+        </p>
+        <div>
+            <label for="playerNameInput">Player Name:</label><br>
+            <input type="text" id="playerNameInput" placeholder="Enter player name (e.g., john f)">
+            <button onclick="generateNetworkGraph()">Generate Network Graph</button>
+        </div>
+        <p>
+            This interactive graph displays how players are connected through their game history and performance metrics.
+        </p>
+    `);
+    
+    // Add event listener after the HTML is inserted
+    setTimeout(() => {
+        const input = document.getElementById('playerNameInput');
+        if (input) {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    generateNetworkGraph();
+                }
+            });
+        }
+    }, 0);
+}
+
+// Global function for network graph generation
+function generateNetworkGraph() {
+    const playerName = document.getElementById('playerNameInput').value.trim();
+    if (!playerName) {
+        alert('Please enter a player name');
+        return;
+    }
+    const domain = "https://api.johnfoxweb.com";
+    const url = domain + "/api/leaderboard/network-graph?player_name=" + encodeURIComponent(playerName);
+    window.open(url, '_blank');
+}
 // Capitalize first letter of each part of the name in the 'Player' or 'Name' column
 function capitalizeNameFields(data) {
     if (!Array.isArray(data) || data.length === 0) return;
@@ -270,6 +311,7 @@ function showLeaderboardMenu() {
             <li><a href="?leaderboardendpoint=firstplace" target="_blank">First Place Leaderboard</a></li>
             <li><a href="?leaderboardendpoint=itmpercent" target="_blank">ITM Percentage</a></li>
             <li><a href="?leaderboardendpoint=roi" target="_blank">ROI Leaderboard</a></li>
+            <li><a href="?leaderboardendpoint=network-graph" target="_blank">Network Graph</a></li>
         </ul>
     `;
     
@@ -314,10 +356,22 @@ function showLeaderboardMenu() {
       setLeaderboardTitle("ITM Percent Leaderboard")
       setITMPercentDescription();
     }
+    else if (leaderBoardEndpoint === "network-graph") {
+      setLeaderboardTitle("Player Network Graph")
+      setNetworkGraphDescription();
+      // Clear the table since we're showing the input form instead
+      const thead = document.querySelector('table thead');
+      const tbody = document.querySelector('table tbody');
+      if (thead) thead.innerHTML = '';
+      if (tbody) tbody.innerHTML = '';
+      return; // Exit early for network graph
+    }
     
     const domain = "https://api.johnfoxweb.com"
     const localDomain = "http://127.0.0.1:5000"
-    const exampleData = await getData(domain + "/api/leaderboard/" + leaderBoardEndpoint);
+    
+    // Regular endpoint handling (not network-graph)
+    const exampleData = await getData(localDomain + "/api/leaderboard/" + leaderBoardEndpoint);
     capitalizeNameFields(exampleData);
 
     if (exampleData.length === 0) {
