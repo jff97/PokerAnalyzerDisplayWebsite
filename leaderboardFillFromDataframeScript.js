@@ -1,3 +1,7 @@
+// Domain configuration
+const domain = "https://api.johnfoxweb.com";
+const localDomain = "http://127.0.0.1:5000";
+
 function createThCell(content, options = {}) {
     const th = document.createElement('th');
     if (options.id) th.id = options.id;
@@ -269,6 +273,13 @@ function setNetworkGraphDescription() {
     }, 0);
 }
 
+// Normalize player name: lowercase, trim spaces, single spaces between words
+function normalizePlayerName(name) {
+    return name.toLowerCase()
+               .trim()
+               .replace(/\s+/g, ' '); // Replace multiple spaces with single space
+}
+
 // Global function for network graph generation
 function generateNetworkGraph() {
     const playerName = document.getElementById('playerNameInput').value.trim();
@@ -276,8 +287,9 @@ function generateNetworkGraph() {
         alert('Please enter a player name');
         return;
     }
-    const domain = "https://api.johnfoxweb.com";
-    const url = domain + "/api/leaderboard/network-graph?player_name=" + encodeURIComponent(playerName);
+    
+    const normalizedName = normalizePlayerName(playerName);
+    const url = domain + "/api/leaderboard/network-graph?player_name=" + encodeURIComponent(normalizedName);
     window.open(url, '_blank');
 }
 // Capitalize first letter of each part of the name in the 'Player' or 'Name' column
@@ -367,11 +379,8 @@ function showLeaderboardMenu() {
       return; // Exit early for network graph
     }
     
-    const domain = "https://api.johnfoxweb.com"
-    const localDomain = "http://127.0.0.1:5000"
-    
     // Regular endpoint handling (not network-graph)
-    const exampleData = await getData(localDomain + "/api/leaderboard/" + leaderBoardEndpoint);
+    const exampleData = await getData(domain + "/api/leaderboard/" + leaderBoardEndpoint);
     capitalizeNameFields(exampleData);
 
     if (exampleData.length === 0) {
