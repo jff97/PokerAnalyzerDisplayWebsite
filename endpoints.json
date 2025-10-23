@@ -10,11 +10,6 @@
     "description": "<p>For every round a player places ahead of a percentage of other players who played that day. This leaderboard measures on average what percentage of players they place ahead of.</p>${getMinimumRoundsDisclaimer()}"
   },
   {
-    "endpoint": "percentilenoroundlimit",
-    "title": "Average Percent Players Outlasted Leaderboardno round limit",
-    "description": "<p>Similar to the percentile leaderboard, but includes all rounds without any round limit restrictions. Shows the overall percentage of players outlasted across all games played.</p>"
-  },
-  {
     "endpoint": "roi",
     "title": "Average Simulated (WSOP style) Return On Investment Leaderboard",
     "description": "<p>World Series of Poker (WSOP) style return on investment calculations measure profitability based on theoretical buy-in versus winnings in standard tournament-style payout structure. Example... If you buy in for $100 and your AVG ROI is 30% then on average you will walk out with $130</p>${getMinimumRoundsDisclaimer()}${getNoMoneyDisclaimer()}"
