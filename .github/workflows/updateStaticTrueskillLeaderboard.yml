@@ -1,5 +1,9 @@
 name: Update Static Leaderboard
 
+# This permission is needed for GitHub Actions to push changes
+permissions:
+  contents: write
+
 on:
   # Option 1: Independent schedule slightly after refresh rounds
   schedule:
