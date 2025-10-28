@@ -31,8 +31,8 @@ jobs:
       - name: Fetch trueskill data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/trueskill" > "static/cachedLeaderboards/trueskill.json"
 
-      - name: Fetch percentile data
-        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/percentile" > "static/cachedLeaderboards/percentile.json"
+      - name: Fetch players outlasted data
+        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/players-outlasted" > "static/cachedLeaderboards/players-outlasted.json"
 
       - name: Fetch ROI data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/roi" > "static/cachedLeaderboards/roi.json"
