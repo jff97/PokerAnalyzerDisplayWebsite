@@ -148,10 +148,8 @@ async function getData(url) {
 }
 
 async function getLeaderboardData(endpoint) {
-    if (endpoint === "trueskill") {
-        return getData("static/trueskillLeaderboard.json");
-    }
-    return getData(BASE_URL + "/api/leaderboard/" + endpoint);
+    // All endpoints are now cached locally
+    return getData(`static/cachedLeaderboards/${endpoint}.json`);
 }
 
 function getQueryParam(param) {
@@ -197,6 +195,7 @@ function generateNetworkGraph() {
         return;
     }
     
+    // Network graph still needs to use the API directly since it requires a player name parameter
     const normalizedName = normalizePlayerName(playerName);
     const url = BASE_URL + "/api/leaderboard/network-graph?player_name=" + encodeURIComponent(normalizedName);
     window.open(url, '_blank');
