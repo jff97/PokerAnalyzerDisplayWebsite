@@ -4,12 +4,8 @@ permissions:
   contents: write
 
 on:
-  schedule:
-    - cron: '34 7 * * *'   # 5 mins after 2:29 AM CT
-    - cron: '21 14 * * *'  # 5 mins after 9:16 AM CT
-    - cron: '16 22 * * *'  # 5 mins after 5:11 PM CT
   repository_dispatch:
-    types: [refresh_leaderboard]
+    types: [refresh_leaderboards]
   workflow_dispatch:
 
 jobs:
