@@ -1,146 +1,58 @@
 name: Update Static Leaderboard
 
-# This permission is needed for GitHub Actions to push changes
 permissions:
   contents: write
 
 on:
-  # Option 1: Independent schedule slightly after refresh rounds
   schedule:
     - cron: '34 7 * * *'   # 5 mins after 2:29 AM CT
     - cron: '21 14 * * *'  # 5 mins after 9:16 AM CT
     - cron: '16 22 * * *'  # 5 mins after 5:11 PM CT
-  # Option 2: Manual trigger that the other repo can call
   repository_dispatch:
     types: [refresh_leaderboard]
-  # For testing
   workflow_dispatch:
 
 jobs:
-  setup:
+  update-leaderboards:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Make Sure API is Reachable
+        run: |
+          for i in {1..3}; do
+            if [ $(curl -s -o /dev/null -w "%{http_code}" "http://api.johnfoxweb.com") -eq 200 ]; then
+              exit 0
+            else
+              sleep 40
+            fi
+          done
+          exit 1
+      
       - name: Create cache directory
         run: mkdir -p static/cachedLeaderboards
-      - name: Upload workspace
-        uses: actions/upload-artifact@v3
-        with:
-          name: workspace
-          path: .
-
-  trueskill:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: workspace
+      
       - name: Fetch trueskill data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/trueskill" > "static/cachedLeaderboards/trueskill.json"
-      - name: Upload updated workspace
-        uses: actions/upload-artifact@v3
-        with:
-          name: workspace
-          path: .
 
-  percentile:
-    needs: trueskill
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: workspace
       - name: Fetch percentile data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/percentile" > "static/cachedLeaderboards/percentile.json"
-      - name: Upload updated workspace
-        uses: actions/upload-artifact@v3
-        with:
-          name: workspace
-          path: .
 
-  roi:
-    needs: percentile
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: workspace
       - name: Fetch ROI data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/roi" > "static/cachedLeaderboards/roi.json"
-      - name: Upload updated workspace
-        uses: actions/upload-artifact@v3
-        with:
-          name: workspace
-          path: .
 
-  firstplace:
-    needs: roi
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: workspace
       - name: Fetch first place data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/firstplace" > "static/cachedLeaderboards/firstplace.json"
-      - name: Upload updated workspace
-        uses: actions/upload-artifact@v3
-        with:
-          name: workspace
-          path: .
 
-  itmpercent:
-    needs: firstplace
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: workspace
       - name: Fetch ITM percent data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/itmpercent" > "static/cachedLeaderboards/itmpercent.json"
-      - name: Upload updated workspace
-        uses: actions/upload-artifact@v3
-        with:
-          name: workspace
-          path: .
 
-  network-graph:
-    needs: itmpercent
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: workspace
       - name: Fetch network graph data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/network-graph" > "static/cachedLeaderboards/network-graph.json"
-      - name: Upload updated workspace
-        uses: actions/upload-artifact@v3
-        with:
-          name: workspace
-          path: .
 
-  community-disconnectedness:
-    needs: network-graph
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: workspace
       - name: Fetch community disconnectedness data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/community-disconnectedness" > "static/cachedLeaderboards/community-disconnectedness.json"
-      - name: Upload updated workspace
-        uses: actions/upload-artifact@v3
-        with:
-          name: workspace
-          path: .
-
-  commit:
-    needs: community-disconnectedness
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: workspace
+      
       - name: Commit and Push
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
