@@ -5,7 +5,7 @@
     "description": "<strong>Why We Use TrueSkill™ for Rankings</strong><br><br><ul><li>🏆 Considers both your placement in the round and the ranking of opponents you faced to determine your rank.</li><li>🔄 Adjusts your ranking after every game you play.</li><li>🎮 Used for competitive matchmaking in popular games like Halo, Call of Duty, Gears of War, Forza, Overwatch, Team Fortress 2, and CS:GO.</li><li><i class=\"fa-solid fa-circle-question\" style=\"color:#8bc34a;\"></i> Uncertainty value keeps it fair: new players get a temporary penalty until they have enough rounds for a reliable ranking. It is a standard deviation value from statistics.</li><li>🃏 <strong>Adjusted Ranking:</strong> Your TrueSkill rating minus 3 times your uncertainty. This accounts for TrueSkill's uncertainty about your skill level and creates a fair ranking for players with both few and many rounds played. Your uncertainty goes down with more rounds played.</li></ul><p><strong>Note:</strong> Your TrueSkill score is a <strong>relative skill estimate</strong>, not a point total or winning percentage. A higher rank indicates a stronger player, but it's not a direct measure of any one stat.</p>"
   },
   {
-    "endpoint": "percentile",
+    "endpoint": "players-outlasted",
     "title": "Average Percent Players Outlasted Leaderboard",
     "description": "<p>For every round a player places ahead of a percentage of other players who played that day. This leaderboard measures on average what percentage of players they place ahead of.</p>${getMinimumRoundsDisclaimer()}"
   },
