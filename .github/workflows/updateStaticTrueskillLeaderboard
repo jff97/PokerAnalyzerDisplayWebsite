@@ -1,0 +1,33 @@
+name: Update Static Leaderboard
+
+on:
+  # Option 1: Independent schedule slightly after refresh rounds
+  schedule:
+    - cron: '34 7 * * *'   # 5 mins after 2:29 AM CT
+    - cron: '21 14 * * *'  # 5 mins after 9:16 AM CT
+    - cron: '16 22 * * *'  # 5 mins after 5:11 PM CT
+  # Option 2: Manual trigger that the other repo can call
+  repository_dispatch:
+    types: [refresh_leaderboard]
+  # For testing
+  workflow_dispatch:
+
+jobs:
+  update-leaderboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Fetch Leaderboard Data
+        run: |
+          mkdir -p static
+          curl -s \
+            https://api.johnfoxweb.com/api/leaderboard/trueskill > static/trueskillLeaderboard.json
+          
+      - name: Commit and Push
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add static/trueskillLeaderboard.json
+          git commit -m "Update leaderboard data [skip ci]" || exit 0
+          git push

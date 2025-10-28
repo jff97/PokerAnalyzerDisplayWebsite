@@ -147,6 +147,13 @@ async function getData(url) {
     }
 }
 
+async function getLeaderboardData(endpoint) {
+    if (endpoint === "trueskill") {
+        return getData("static/trueskillLeaderboard.json");
+    }
+    return getData(BASE_URL + "/api/leaderboard/" + endpoint);
+}
+
 function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
@@ -291,7 +298,7 @@ async function loadLeaderboard() {
         return; // Exit early for network graph
     }
 
-    const exampleData = await getData(BASE_URL + "/api/leaderboard/" + leaderBoardEndpoint);
+    const exampleData = await getLeaderboardData(leaderBoardEndpoint);
     capitalizeNameFields(exampleData);
 
     if (exampleData.length === 0) {
