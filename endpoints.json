@@ -11,7 +11,7 @@
   },
   {
     "endpoint": "roi",
-    "title": "Average Simulated (WSOP style) Return On Investment",
+    "title": "Average Simulated ROI",
     "description": "<p>World Series of Poker (WSOP) style return on investment calculations measure profitability based on theoretical buy-in versus winnings in standard tournament-style payout structure. Example... If you buy in for $100 and your AVG ROI is 30% then on average you will walk out with $130</p>${getMinimumRoundsDisclaimer()}${getNoMoneyDisclaimer()}"
   },
   {
@@ -23,15 +23,5 @@
     "endpoint": "itmpercent",
     "title": "ITM Percent",
     "description": "<p>In The Money (ITM) percentage shows how often a player would finish in a paying position in a standard tournament payout structure. On this leaderboard ITM is defined by finishing in the top 20% of the competition.</p>${getMinimumRoundsDisclaimer()}${getNoMoneyDisclaimer()}"
-  },
-  {
-    "endpoint": "network-graph",
-    "title": "Player Network Graph",
-    "description": "<p>Network graph visualization showing player connections and performance relationships. Enter a player name below to generate their network graph.</p><div><label for=\"playerNameInput\">Player Name:</label><br><input type=\"text\" id=\"playerNameInput\" placeholder=\"Enter player name (e.g., john f)\"><button onclick=\"generateNetworkGraph()\">Generate Network Graph</button></div><p>This interactive graph displays how players are connected through their game history and performance metrics.</p>"
-  },
-  {
-   "endpoint": "community-disconnectedness",
-   "title": "Isolated skill pockets Analysis",
-   "description": "<p>This analysis identifies isolated pockets of skill within the player community, highlighting groups of players who may not interact frequently with the broader player base. Understanding these pockets can help in tailoring matchmaking and community engagement strategies.</p>"
   }
 ]

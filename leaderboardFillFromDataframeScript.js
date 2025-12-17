@@ -218,14 +218,16 @@ function capitalizeFullName(name) {
     ).join(' ');
 }
 
-function showLeaderboardMenu(endpoints) {
-    setLeaderboardTitle("Choose a Leaderboard");
+function showLeaderboardMenu(endpoints, title) {
+    setLeaderboardTitle(title);
+    
+    const page = getQueryParam("page");
+    const pageParam = page ? `&page=${page}` : '';
     
     const menuContent = `
-        <p>Select a leaderboard to view:</p>
         <ul>
             ${endpoints.map(endpoint => 
-                `<li><a href="?leaderboardendpoint=${endpoint.endpoint}" target="_blank">${endpoint.title.replace(/<[^>]+>/g, '')}</a></li>`
+                `<li><a href="?leaderboardendpoint=${endpoint.endpoint}${pageParam}" target="_blank">${endpoint.title.replace(/<[^>]+>/g, '')}</a></li>`
             ).join('')}
         </ul>
     `;
@@ -252,19 +254,38 @@ async function loadEndpoints() {
     }
 }
 
+async function loadAnalysisEndpoints() {
+    try {
+        const response = await fetch('analysisEndpoints.json');
+        if (!response.ok) {
+            console.error('Failed to load analysisEndpoints.json');
+            return [];
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching analysisEndpoints:', error);
+        return [];
+    }
+}
+
 async function loadLeaderboard() {
-    const endpoints = await loadEndpoints();
+    const page = getQueryParam("page");
+    const isAnalysis = page === 'analysis';
+    
+    const endpoints = isAnalysis ? await loadAnalysisEndpoints() : await loadEndpoints();
     let leaderBoardEndpoint = getQueryParam("leaderboardendpoint");
     
     if (leaderBoardEndpoint === null) {
-        showLeaderboardMenu(endpoints);
+        const title = isAnalysis ? "Advanced Model Analysis" : "Choose a Leaderboard";
+        showLeaderboardMenu(endpoints, title);
         return;
     }
 
     const endpointConfig = endpoints.find(ep => ep.endpoint === leaderBoardEndpoint);
     if (!endpointConfig) {
         console.warn(`No configuration found for endpoint: ${leaderBoardEndpoint}`);
-        showLeaderboardMenu(endpoints);
+        const title = isAnalysis ? "Advanced Model Analysis" : "Choose a Leaderboard";
+        showLeaderboardMenu(endpoints, title);
         return;
     }
 

@@ -1,0 +1,12 @@
+[
+  {
+    "endpoint": "network-graph",
+    "title": "Player Network Graph",
+    "description": "<p>Network graph visualization showing player connections and performance relationships. Enter a player name below to generate their network graph.</p><div><label for=\"playerNameInput\">Player Name:</label><br><input type=\"text\" id=\"playerNameInput\" placeholder=\"Enter player name (e.g., john f)\"><button onclick=\"generateNetworkGraph()\">Generate Network Graph</button></div><p>This interactive graph displays how players are connected through their game history and performance metrics.</p>"
+  },
+  {
+   "endpoint": "community-disconnectedness",
+   "title": "Isolated skill pockets Analysis",
+   "description": "<p>This analysis identifies isolated pockets of skill within the player community, highlighting groups of players who may not interact frequently with the broader player base. Understanding these pockets can help in tailoring matchmaking and community engagement strategies.</p>"
+  }
+]
