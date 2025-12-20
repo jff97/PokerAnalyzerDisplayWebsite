@@ -318,6 +318,15 @@ async function loadLeaderboard() {
         return; // Exit early for network graph
     }
 
+    if (leaderBoardEndpoint === "placement-distribution") {
+        // KDE analysis uses a separate standalone page, no table data needed
+        const thead = document.querySelector('table thead');
+        const tbody = document.querySelector('table tbody');
+        if (thead) thead.innerHTML = '';
+        if (tbody) tbody.innerHTML = '';
+        return; // Exit early for placement distribution
+    }
+
     const exampleData = await getLeaderboardData(leaderBoardEndpoint);
     capitalizeNameFields(exampleData);
 
