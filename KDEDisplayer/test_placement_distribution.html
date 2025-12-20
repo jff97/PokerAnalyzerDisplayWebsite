@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Player Placement Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Player Placement Distribution</h1>
+    
+    <div class="controls">
+        <label for="playerName">Player Name:</label>
+        <input type="text" id="playerName" placeholder="Enter player name">
+        <button onclick="addPlayer()">Add Player</button>
+        <button class="clear" onclick="clearPlayers()">Clear All</button>
+        <div id="playerList"></div>
+        <div id="message"></div>
+    </div>
+
+    <div id="chartContainer">
+        <canvas id="kdeChart"></canvas>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
