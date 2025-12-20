@@ -23,5 +23,10 @@
     "endpoint": "itmpercent",
     "title": "ITM Percent",
     "description": "<p>In The Money (ITM) percentage shows how often a player would finish in a paying position in a standard tournament payout structure. On this leaderboard ITM is defined by finishing in the top 20% of the competition.</p>${getMinimumRoundsDisclaimer()}${getNoMoneyDisclaimer()}"
+  },
+  {
+    "endpoint": "placement-distribution",
+    "title": "Player Placement Distribution (KDE Analysis)",
+    "description": "<p>Interactive visualization showing the probability distribution of player placement finishes using Kernel Density Estimation.</p><p><a href=\"KDEDisplayer/test_placement_distribution.html\" target=\"_blank\" style=\"display:inline-block; padding:10px 20px; background-color:#007bff; color:white; text-decoration:none; border-radius:4px; font-weight:bold;\">Open KDE Distribution Tool</a></p><p>This advanced statistical analysis reveals patterns in how players typically finish in rounds. Compare multiple players to see if they tend to dominate (high percentile finishes), struggle (low percentile finishes), or show consistent performance across the range.</p>"
   }
 ]

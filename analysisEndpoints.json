@@ -8,10 +8,5 @@
    "endpoint": "community-disconnectedness",
    "title": "Isolated skill pockets Analysis",
    "description": "<p>This analysis identifies isolated pockets of skill within the player community, highlighting groups of players who may not interact frequently with the broader player base. Understanding these pockets can help in tailoring matchmaking and community engagement strategies.</p>"
-  },
-  {
-   "endpoint": "placement-distribution",
-   "title": "Player Placement Distribution (KDE Analysis)",
-   "description": "<p>Interactive visualization showing the probability distribution of player placement finishes using Kernel Density Estimation.</p><p><a href=\"KDEDisplayer/test_placement_distribution.html\" target=\"_blank\" style=\"display:inline-block; padding:10px 20px; background-color:#007bff; color:white; text-decoration:none; border-radius:4px; font-weight:bold;\">Open KDE Distribution Tool</a></p><p>This advanced statistical analysis reveals patterns in how players typically finish in rounds. Compare multiple players to see if they tend to dominate (high percentile finishes), struggle (low percentile finishes), or show consistent performance across the range.</p>"
   }
 ]
