@@ -1,6 +1,6 @@
 // Domain configuration
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const BASE_URL = isLocal ? 'http://127.0.0.1:5000' : 'https://api.johnfoxweb.com';
+const BASE_URL = isLocal ? 'http://localhost:5000' : 'https://api.johnfoxweb.com';
 
 function createThCell(content, options = {}) {
     const th = document.createElement('th');

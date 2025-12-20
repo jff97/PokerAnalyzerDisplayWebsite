@@ -1,8 +1,6 @@
 let currentChart = null;
 let selectedPlayers = [];
 let allPlayersData = null;
-const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_BASE_URL = isLocal ? 'http://localhost:5000' : 'https://api.johnfoxweb.com';
 
 const COLORS = [
     { border: 'rgb(75, 192, 192)', background: 'rgba(75, 192, 192, 0.2)' },
@@ -24,7 +22,8 @@ async function loadAllPlayers() {
 
     try {
         messageDiv.innerHTML = '<div class="info">Loading player data...</div>';
-        const response = await fetch(`${API_BASE_URL}/api/leaderboard/placement-distributions`);
+        // Load from cached file instead of API
+        const response = await fetch('../static/cachedLeaderboards/placement-distribution.json');
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
