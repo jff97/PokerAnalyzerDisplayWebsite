@@ -49,6 +49,9 @@ jobs:
       - name: Fetch placement distribution data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/placement-distributions" > "static/cachedLeaderboards/placement-distribution.json"
       
+      - name: Fetch top points data
+        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/months-top-point-players" > "static/cachedLeaderboards/months-top-point-players.json"
+      
       - name: Commit and Push
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
