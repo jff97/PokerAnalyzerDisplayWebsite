@@ -3,14 +3,14 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Offsuit Poker Analytics Leaderboard</title>
-    <meta name="description" content="Poker Scoreboard and Leaderboard">
+    <title>Offsuit Poker Analytics - Advanced Analysis</title>
+    <meta name="description" content="Poker Advanced Analysis">
     <!-- Core CSS Files -->
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" type="text/css" href="./static/scorekeeper-CG6ZTgm6.css">
-    <link rel="stylesheet" href="./static/bootstrap-icons.css">
-    <link rel="stylesheet" crossorigin="" href="./static/ScoresheetComponent-DHbPH0O7.css">
+    <link rel="stylesheet" type="text/css" href="../static/scorekeeper-CG6ZTgm6.css">
+    <link rel="stylesheet" href="../static/bootstrap-icons.css">
+    <link rel="stylesheet" crossorigin="" href="../static/ScoresheetComponent-DHbPH0O7.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="https://keepthescore.com/static/favicon.ico">
 </head>
@@ -23,34 +23,25 @@
                         <div class="container text-center mt-3"></div>
                         <div class="container mt-5 d-flex flex-column">
                             <div>
-                                <img id="header-image" class="img-fluid mx-auto d-block mb-3" src="./static/generalLeaderboard.png" width="400" alt="Leaderboard logo">
+                                <img id="header-image" class="img-fluid mx-auto d-block mb-3" src="../static/generalLeaderboard.png" width="400" alt="Analysis logo">
                             </div>
                             <div class="dynamic-width p-3 mb-2 card score-card title-card card-elevated">
                                 <div class="text-center">
                                     <div class="editable-wrapper px-2 py-1">
-                                        <h1 id="leaderboardTitle"></h1>
-                                        <div id="leaderboardDescription" style="color:inherit; margin-top:2.2em; text-align:left; font-size:110%;"></div>
+                                        <h1 id="diagnosticsTitle"></h1>
+                                        <div id="diagnosticsDescription" style="color:inherit; margin-top:2.2em; text-align:left; font-size:110%;"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="container mb-3">
-                            <div>
-                                <div class="content-box table-responsive scroll-shadow">
-                                    <table class="table table-borderless m-0 no-ads w-100 themed-l2">
-                                        <thead></thead>
-                                        <tbody class="stripey-table"></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="diagnosticsContent"></div>
                         <div id="spacer" class="my-3">&nbsp;</div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <script src="./config.js"></script>
-    <script src="leaderboardFillFromDataframeScript.js"></script>
+    <script src="../config.js"></script>
+    <script src="diagnosticsScript.js"></script>
 </body>
 </html>

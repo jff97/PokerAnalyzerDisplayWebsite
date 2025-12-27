@@ -2,6 +2,15 @@ let currentChart = null;
 let selectedPlayers = [];
 let allPlayersData = null;
 
+// Set up event listeners when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('addPlayerBtn')?.addEventListener('click', addPlayer);
+    document.getElementById('clearPlayersBtn')?.addEventListener('click', clearPlayers);
+    document.getElementById('playerName')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') addPlayer();
+    });
+});
+
 const COLORS = [
     { border: 'rgb(75, 192, 192)', background: 'rgba(75, 192, 192, 0.2)' },
     { border: 'rgb(255, 99, 132)', background: 'rgba(255, 99, 132, 0.2)' },

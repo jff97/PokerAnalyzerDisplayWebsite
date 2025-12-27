@@ -43,11 +43,11 @@ jobs:
       - name: Fetch ITM percent data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/itmpercent" > "static/cachedLeaderboards/itmpercent.json"
 
-      - name: Fetch community disconnectedness data
-        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/community-disconnectedness" > "static/cachedLeaderboards/community-disconnectedness.json"
-
       - name: Fetch placement distribution data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/placement-distributions" > "static/cachedLeaderboards/placement-distribution.json"
+      
+      - name: Fetch community disconnectedness data
+        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/community-disconnectedness" > "static/cachedLeaderboards/community-disconnectedness.json"
       
       - name: Fetch top points data
         run: |

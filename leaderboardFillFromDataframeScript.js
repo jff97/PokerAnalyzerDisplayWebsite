@@ -1,7 +1,3 @@
-// Domain configuration
-const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const BASE_URL = isLocal ? 'http://localhost:5000' : 'https://api.johnfoxweb.com';
-
 function createThCell(content, options = {}) {
     const th = document.createElement('th');
     if (options.id) th.id = options.id;
@@ -135,7 +131,9 @@ function buildTableBody(data, columns) {
     });
 }
 
-async function getData(url) {
+async function getLeaderboardData(endpoint) {
+    // All endpoints are now cached locally
+    const url = `static/cachedLeaderboards/${endpoint}.json`;
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -145,11 +143,6 @@ async function getData(url) {
     } catch (error) {
         return [];
     }
-}
-
-async function getLeaderboardData(endpoint) {
-    // All endpoints are now cached locally
-    return getData(`static/cachedLeaderboards/${endpoint}.json`);
 }
 
 function getQueryParam(param) {
@@ -182,33 +175,11 @@ function getMinimumRoundsDisclaimer() {
         </p>`;
 }
 
-function normalizePlayerName(name) {
-    return name.toLowerCase()
-               .trim()
-               .replace(/\s+/g, ' '); // Replace multiple spaces with single space
-}
-
-function generateNetworkGraph() {
-    const playerName = document.getElementById('playerNameInput').value.trim();
-    if (!playerName) {
-        alert('Please enter a player name');
-        return;
-    }
-    
-    // Network graph still needs to use the API directly since it requires a player name parameter
-    const normalizedName = normalizePlayerName(playerName);
-    const url = BASE_URL + "/api/leaderboard/network-graph?player_name=" + encodeURIComponent(normalizedName);
-    window.open(url, '_blank');
-}
-
 function capitalizeNameFields(data) {
     if (!Array.isArray(data) || data.length === 0) return;
     data.forEach(row => {
-        ['Player', 'Name'].forEach(field => {
-            if (typeof row[field] === 'string') {
-                row[field] = capitalizeFullName(row[field]);
-            }
-        });
+        if (typeof row.Player === 'string') row.Player = capitalizeFullName(row.Player);
+        if (typeof row.Name === 'string') row.Name = capitalizeFullName(row.Name);
     });
 }
 
@@ -218,21 +189,45 @@ function capitalizeFullName(name) {
     ).join(' ');
 }
 
+// External tools and analysis pages (not leaderboard endpoints)
+const externalLinks = [
+    {
+        title: "Player Placement Distribution (KDE Analysis)",
+        href: "KDEDisplayer/test_placement_distribution.html"
+    }
+];
+
 function showLeaderboardMenu(endpoints, title) {
     setLeaderboardTitle(title);
     
-    const page = getQueryParam("page");
-    const pageParam = page ? `&page=${page}` : '';
+    const descDiv = document.getElementById('leaderboardDescription');
+    descDiv.innerHTML = '';
     
-    const menuContent = `
-        <ul>
-            ${endpoints.map(endpoint => 
-                `<li><a href="?leaderboardendpoint=${endpoint.endpoint}${pageParam}" target="_blank">${endpoint.title.replace(/<[^>]+>/g, '')}</a></li>`
-            ).join('')}
-        </ul>
-    `;
+    const ul = document.createElement('ul');
     
-    setDescription(menuContent);
+    // Add endpoint links
+    endpoints.forEach(endpoint => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `?leaderboardendpoint=${endpoint.endpoint}`;
+        a.target = '_blank';
+        a.textContent = endpoint.title.replace(/<[^>]+>/g, '');
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+    
+    // Add external links
+    externalLinks.forEach(link => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = link.href;
+        a.target = '_blank';
+        a.textContent = link.title;
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+    
+    descDiv.appendChild(ul);
     
     const thead = document.querySelector('table thead');
     const tbody = document.querySelector('table tbody');
@@ -254,78 +249,30 @@ async function loadEndpoints() {
     }
 }
 
-async function loadAnalysisEndpoints() {
-    try {
-        const response = await fetch('analysisEndpoints.json');
-        if (!response.ok) {
-            console.error('Failed to load analysisEndpoints.json');
-            return [];
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching analysisEndpoints:', error);
-        return [];
-    }
+function processDescription(description) {
+    return description
+        .replace('${getMinimumRoundsDisclaimer()}', getMinimumRoundsDisclaimer())
+        .replace('${getNoMoneyDisclaimer()}', getNoMoneyDisclaimer());
 }
 
 async function loadLeaderboard() {
-    const page = getQueryParam("page");
-    const isAnalysis = page === 'analysis';
+    const endpoints = await loadEndpoints();
+    const leaderBoardEndpoint = getQueryParam("leaderboardendpoint");
     
-    const endpoints = isAnalysis ? await loadAnalysisEndpoints() : await loadEndpoints();
-    let leaderBoardEndpoint = getQueryParam("leaderboardendpoint");
-    
-    if (leaderBoardEndpoint === null) {
-        const title = isAnalysis ? "Advanced Model Analysis" : "Choose a Leaderboard";
-        showLeaderboardMenu(endpoints, title);
+    if (!leaderBoardEndpoint) {
+        showLeaderboardMenu(endpoints, "Choose a Leaderboard");
         return;
     }
 
     const endpointConfig = endpoints.find(ep => ep.endpoint === leaderBoardEndpoint);
     if (!endpointConfig) {
         console.warn(`No configuration found for endpoint: ${leaderBoardEndpoint}`);
-        const title = isAnalysis ? "Advanced Model Analysis" : "Choose a Leaderboard";
-        showLeaderboardMenu(endpoints, title);
+        showLeaderboardMenu(endpoints, "Choose a Leaderboard");
         return;
     }
 
     setLeaderboardTitle(endpointConfig.title);
-    
-    // Evaluate disclaimers in description if present
-    let description = endpointConfig.description
-        .replace('${getMinimumRoundsDisclaimer()}', getMinimumRoundsDisclaimer())
-        .replace('${getNoMoneyDisclaimer()}', getNoMoneyDisclaimer());
-    
-    setDescription(description);
-
-    if (leaderBoardEndpoint === "network-graph") {
-        // Add event listener for network graph input
-        setTimeout(() => {
-            const input = document.getElementById('playerNameInput');
-            if (input) {
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        generateNetworkGraph();
-                    }
-                });
-            }
-        }, 0);
-        
-        const thead = document.querySelector('table thead');
-        const tbody = document.querySelector('table tbody');
-        if (thead) thead.innerHTML = '';
-        if (tbody) tbody.innerHTML = '';
-        return; // Exit early for network graph
-    }
-
-    if (leaderBoardEndpoint === "placement-distribution") {
-        // KDE analysis uses a separate standalone page, no table data needed
-        const thead = document.querySelector('table thead');
-        const tbody = document.querySelector('table tbody');
-        if (thead) thead.innerHTML = '';
-        if (tbody) tbody.innerHTML = '';
-        return; // Exit early for placement distribution
-    }
+    setDescription(processDescription(endpointConfig.description));
 
     const exampleData = await getLeaderboardData(leaderBoardEndpoint);
     capitalizeNameFields(exampleData);
@@ -335,7 +282,7 @@ async function loadLeaderboard() {
         return;
     }
     
-    let columns = Object.keys(exampleData[0]);
+    const columns = Object.keys(exampleData[0]);
     if (!columns.includes('Rank')) columns.unshift('Rank');
 
     buildTableHeader(columns);

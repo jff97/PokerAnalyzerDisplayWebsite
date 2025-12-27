@@ -1,6 +1,3 @@
-// Domain configuration
-const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const BASE_URL = isLocal ? 'http://localhost:5000' : 'https://api.johnfoxweb.com';
 const API_URL = `${BASE_URL}/api/admin/season-calendar`;
 
 const months = [
