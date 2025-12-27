@@ -51,10 +51,18 @@ jobs:
       
       - name: Fetch top points data
         run: |
-          TODAY_MONTH=$(date +'%m')
+          TODAY_MONTH=$((10#$(date +'%m')))
           TODAY_YEAR=$(date +'%Y')
           echo "Month: $TODAY_MONTH, Year: $TODAY_YEAR"
-          curl -s "https://api.johnfoxweb.com/api/leaderboard/months-top-point-players?month=$TODAY_MONTH&year=$TODAY_YEAR" > "static/cachedLeaderboards/months-top-point-players.json"
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/months-top-point-players?month=$TODAY_MONTH&year=$TODAY_YEAR")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Error response: $BODY"
+            exit 1
+          fi
+          echo "$BODY" > "static/cachedLeaderboards/months-top-point-players.json"
       
       - name: Commit and Push
         run: |
