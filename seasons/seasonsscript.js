@@ -40,6 +40,7 @@ function showYearForm() {
                     <p>Enter the year you want to set start and end dates for. The year applies to the months in that calendar year. 
                     Not all dates have to explicitly fall within that year, and the dates do not need to fall in the calendar month exactly; 
                     they represent the league month.</p>
+                    <p>The start date should be the date of the final tournament (Saturday) and the end date should be the last Friday in the season (the day before the next final tournament). Seasons should always run Saturday to Friday.</p>
                     <p>Please ensure all dates are correct before the start of the next season, preferably a month before or ASAP.</p>
                 </details>
             </div>
