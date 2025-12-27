@@ -50,7 +50,10 @@ jobs:
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/placement-distributions" > "static/cachedLeaderboards/placement-distribution.json"
       
       - name: Fetch top points data
-        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/months-top-point-players" > "static/cachedLeaderboards/months-top-point-players.json"
+        run: |
+          TODAY_MONTH=$(date +'%m')
+          TODAY_YEAR=$(date +'%Y')
+          curl -s "https://api.johnfoxweb.com/api/leaderboard/months-top-point-players?month=$TODAY_MONTH&year=$TODAY_YEAR" > "static/cachedLeaderboards/months-top-point-players.json"
       
       - name: Commit and Push
         run: |

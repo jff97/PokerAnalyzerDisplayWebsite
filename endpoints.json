@@ -32,6 +32,6 @@
   {
     "endpoint": "months-top-point-players",
     "title": "Players With Most Points This Month",
-    "description": "He He Hoo Hoo</p>"
+    "description": "<p>Shows players who have accumulated the most points in the current month.</p>"
   }
 ]
