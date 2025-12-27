@@ -30,7 +30,8 @@ function showDiagnosticsMenu() {
     
     const links = [
         { href: '?endpoint=network-graph', text: 'Player Network Graph' },
-        { href: '?endpoint=community-disconnectedness', text: 'Isolated Skill Pockets Analysis' }
+        { href: '?endpoint=community-disconnectedness', text: 'Isolated Skill Pockets Analysis' },
+        { href: 'monthsLeaderboard.html', text: 'Monthly Points Leaderboard Past Months' }
     ];
     
     links.forEach(link => {
