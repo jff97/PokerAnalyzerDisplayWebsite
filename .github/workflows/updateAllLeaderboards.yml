@@ -53,6 +53,7 @@ jobs:
         run: |
           TODAY_MONTH=$(date +'%m')
           TODAY_YEAR=$(date +'%Y')
+          echo "Month: $TODAY_MONTH, Year: $TODAY_YEAR"
           curl -s "https://api.johnfoxweb.com/api/leaderboard/months-top-point-players?month=$TODAY_MONTH&year=$TODAY_YEAR" > "static/cachedLeaderboards/months-top-point-players.json"
       
       - name: Commit and Push
