@@ -194,10 +194,6 @@ const externalLinks = [
     {
         title: "Player Placement Distribution (KDE Analysis)",
         href: "KDEDisplayer/test_placement_distribution.html"
-    },
-    {
-        title: "Admin Tools & Diagnostics",
-        href: "diagnostics/diagnostics.html"
     }
 ];
 

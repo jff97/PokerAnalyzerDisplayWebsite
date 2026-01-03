@@ -64,6 +64,21 @@ jobs:
           fi
           echo "$BODY" > "static/cachedLeaderboards/months-top-point-players.json"
       
+      - name: Fetch yearly top points data
+        run: |
+          # TODAY_YEAR=$(date +'%Y')
+          TODAY_YEAR=2025
+          echo "Year: $TODAY_YEAR"
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/years-top-point-players?year=$TODAY_YEAR")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Error response: $BODY"
+            exit 1
+          fi
+          echo "$BODY" > "static/cachedLeaderboards/years-top-point-players.json"
+      
       - name: Commit and Push
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"

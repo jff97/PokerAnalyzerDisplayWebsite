@@ -28,5 +28,10 @@
     "endpoint": "months-top-point-players",
     "title": "Players With Most Points This Month",
     "description": "<p>Shows players who have accumulated the most points in the current month.</p>"
+  },
+  {
+    "endpoint": "years-top-point-players",
+    "title": "Players With Most Points This Year",
+    "description": "<p>Shows players who have accumulated the most points in the current year.</p>"
   }
 ]
