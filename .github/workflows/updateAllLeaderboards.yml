@@ -66,7 +66,7 @@ jobs:
       
       - name: Fetch yearly top points data
         run: |
-          TODAY_YEAR= $(date +'%Y')
+          TODAY_YEAR=$(date +'%Y')
           echo "Year: $TODAY_YEAR"
           RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/years-top-point-players?year=$TODAY_YEAR")
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
