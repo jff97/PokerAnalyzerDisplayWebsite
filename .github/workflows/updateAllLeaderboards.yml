@@ -49,7 +49,7 @@ jobs:
       - name: Fetch community disconnectedness data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/community-disconnectedness" > "static/cachedLeaderboards/community-disconnectedness.json"
       
-      - name: Fetch top points data
+      - name: Fetch monthly top points data
         run: |
           TODAY_MONTH=$((10#$(date +'%m')))
           TODAY_YEAR=$(date +'%Y')
@@ -66,8 +66,7 @@ jobs:
       
       - name: Fetch yearly top points data
         run: |
-          # TODAY_YEAR=$(date +'%Y')
-          TODAY_YEAR=2025
+          TODAY_YEAR= $(date +'%Y')
           echo "Year: $TODAY_YEAR"
           RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/years-top-point-players?year=$TODAY_YEAR")
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
