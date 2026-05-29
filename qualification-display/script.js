@@ -178,19 +178,26 @@ async function getQualifiedPlayers() {
     }
 }
 
-// Build checkbox list for qualified players
+// Build checkbox list for qualified and excluded players
 function buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers) {
     playersListEl.innerHTML = '';
     
-    if (qualifiedPlayers.length === 0) {
-        playersListEl.innerHTML = '<p class="no-players">No qualified players found</p>';
+    // Combine qualified and excluded players (remove duplicates)
+    const allPlayersSet = new Set();
+    qualifiedPlayers.forEach(p => allPlayersSet.add(String(p)));
+    excludedPlayers.forEach(p => allPlayersSet.add(String(p)));
+    
+    const allPlayers = Array.from(allPlayersSet).sort();
+    
+    if (allPlayers.length === 0) {
+        playersListEl.innerHTML = '<p class="no-players">No players found</p>';
         return;
     }
     
     // Create a normalized set of excluded players (lowercase for comparison)
     const excludedSet = new Set(excludedPlayers.map(p => String(p).toLowerCase()));
     
-    qualifiedPlayers.forEach(playerName => {
+    allPlayers.forEach(playerName => {
         const playerNameLower = String(playerName).toLowerCase();
         const isExcluded = excludedSet.has(playerNameLower);
         
