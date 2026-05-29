@@ -208,9 +208,6 @@ async function loadAdminModal() {
     playersForm.style.display = 'none';
     adminPasswordInput.value = '';
     showAdminMessage('', '');
-    
-    // Attach click handler to unlock button
-    unlockBtn.onclick = unlockAdmin;
 }
 
 async function waitForServerReady() {
@@ -380,17 +377,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Admin mode event listeners
     adminBtn.addEventListener('click', loadAdminModal);
     modalCloseBtn.addEventListener('click', closeAdminModal);
-    adminPasswordInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            unlockAdmin();
-        }
-    });
+    unlockBtn.addEventListener('click', unlockAdmin);
     saveBtn.addEventListener('click', saveExcludedPlayers);
     refreshBtn.addEventListener('click', refreshExcludedPlayers);
     processingCloseBtn.addEventListener('click', () => {
         refreshProcessingModal.style.display = 'none';
         loadQualifiers();
+    });
+    
+    // Enter key support for password input
+    adminPasswordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            unlockAdmin();
+        }
     });
 
     // Close modal when clicking outside of it
