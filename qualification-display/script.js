@@ -28,7 +28,9 @@ let currentAdminPassword = '';
 // Fetch and display qualifiers
 async function loadQualifiers() {
     try {
-        const response = await fetch(CACHE_FILE);
+        // Add cache-busting query parameter to force fresh data
+        const cacheUrl = `${CACHE_FILE}?t=${Date.now()}`;
+        const response = await fetch(cacheUrl);
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -182,7 +184,9 @@ async function fetchUnavailablePlayers() {
 // Extract all unique qualified player names from cache
 async function getQualifiedPlayers() {
     try {
-        const response = await fetch(CACHE_FILE);
+        // Add cache-busting query parameter to force fresh data
+        const cacheUrl = `${CACHE_FILE}?t=${Date.now()}`;
+        const response = await fetch(cacheUrl);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
