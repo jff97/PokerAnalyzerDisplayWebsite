@@ -151,7 +151,10 @@ async function validateAdminPassword(password) {
 
 async function fetchUnavailablePlayers() {
     try {
-        const response = await fetch(UNAVAILABLE_PLAYERS_ENDPOINT);
+        const url = new URL(UNAVAILABLE_PLAYERS_ENDPOINT, window.location.origin);
+        url.searchParams.append('password', currentAdminPassword);
+        
+        const response = await fetch(url.toString());
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
