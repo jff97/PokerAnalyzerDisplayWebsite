@@ -16,6 +16,8 @@ const adminPasswordInput = document.getElementById('admin-password');
 const refreshBtn = document.getElementById('refresh-btn');
 const saveBtn = document.getElementById('save-btn');
 const adminMessageEl = document.getElementById('admin-message');
+const refreshProcessingModal = document.getElementById('refresh-processing-modal');
+const processingCloseBtn = document.getElementById('processing-close-btn');
 
 // Fetch and display qualifiers
 async function loadQualifiers() {
@@ -313,10 +315,10 @@ async function saveExcludedPlayers() {
         showAdminMessage(`Success! Updated ${data.unavailable_players.length} excluded players`, 'success');
         adminPasswordInput.value = '';
         
-        // Refresh the display after a short delay
+        // Close admin modal and show processing modal
         setTimeout(() => {
-            closeAdminModal();
-            loadQualifiers();
+            adminModal.style.display = 'none';
+            refreshProcessingModal.style.display = 'flex';
         }, 1500);
     } catch (error) {
         console.error('Error saving excluded players:', error);
@@ -355,11 +357,23 @@ document.addEventListener('DOMContentLoaded', () => {
     modalCloseBtn.addEventListener('click', closeAdminModal);
     saveBtn.addEventListener('click', saveExcludedPlayers);
     refreshBtn.addEventListener('click', refreshExcludedPlayers);
+    processingCloseBtn.addEventListener('click', () => {
+        refreshProcessingModal.style.display = 'none';
+        loadQualifiers();
+    });
 
     // Close modal when clicking outside of it
     adminModal.addEventListener('click', (e) => {
         if (e.target === adminModal) {
             closeAdminModal();
+        }
+    });
+
+    // Close processing modal when clicking outside of it
+    refreshProcessingModal.addEventListener('click', (e) => {
+        if (e.target === refreshProcessingModal) {
+            refreshProcessingModal.style.display = 'none';
+            loadQualifiers();
         }
     });
 

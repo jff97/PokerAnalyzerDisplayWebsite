@@ -490,3 +490,56 @@ header h1 {
 .btn-secondary:active:not(:disabled) {
     transform: translateY(0);
 }
+
+/* Refresh Processing Modal Styles */
+.modal-content-compact {
+    max-width: 450px;
+    padding: 0;
+}
+
+.refresh-processing-content {
+    text-align: center;
+    padding: 40px 30px;
+}
+
+.processing-icon {
+    font-size: 3em;
+    margin-bottom: 20px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.refresh-processing-content h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.6em;
+}
+
+.refresh-processing-content p {
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.5;
+    font-size: 0.95em;
+}
+
+.processing-note {
+    background-color: #e7f3ff;
+    border-left: 4px solid #667eea;
+    padding: 12px;
+    border-radius: 4px;
+    text-align: left;
+    margin: 15px 0;
+}
+
+.refresh-processing-content .btn-primary {
+    margin-top: 20px;
+    padding: 12px 32px;
+}

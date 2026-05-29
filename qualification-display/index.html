@@ -40,7 +40,7 @@
                 <div id="admin-message" class="admin-message" style="display: none;"></div>
                 
                 <div class="form-group">
-                    <label>Exclude Players</label>
+                    <label>Currently Qualified Players to Exclude</label>
                     <div id="players-list" class="players-list">
                         <p class="loading-players">Loading qualified players...</p>
                     </div>
@@ -54,6 +54,22 @@
                 <div class="modal-buttons">
                     <button id="refresh-btn" class="btn-secondary">Refresh</button>
                     <button id="save-btn" class="btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Refresh Processing Modal -->
+    <div id="refresh-processing-modal" class="modal" style="display: none;">
+        <div class="modal-content modal-content-compact">
+            <div class="modal-body">
+                <div class="refresh-processing-content">
+                    <div class="processing-icon">⏳</div>
+                    <h2>Processing Updates</h2>
+                    <p>Your excluded players list has been saved successfully!</p>
+                    <p class="processing-note">The refresh rounds workflow is now running on the backend. This process refreshes the cache of qualified players and may take <strong>2-5 minutes or longer</strong> depending on server load.</p>
+                    <p class="processing-note">Please check back shortly to see the updated qualifiers.</p>
+                    <button id="processing-close-btn" class="btn-primary">OK</button>
                 </div>
             </div>
         </div>
