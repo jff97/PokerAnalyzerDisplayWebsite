@@ -197,21 +197,61 @@ function buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers) {
 }
 
 async function loadAdminModal() {
-    // Clear previous state
+    // Show modal with loading state
+    adminModal.style.display = 'flex';
+    playersListEl.innerHTML = `
+        <div class="server-loading">
+            <p>Waking up the server...</p>
+            <p class="loading-info">This may take 3-10 minutes (free tier limitation)</p>
+            <div class="spinner"></div>
+        </div>
+    `;
     adminPasswordInput.value = '';
     showAdminMessage('', '');
-    playersListEl.innerHTML = '<p class="loading-players">Loading qualified players...</p>';
     
-    // Show modal first
-    adminModal.style.display = 'flex';
+    // Wait for server to be ready
+    try {
+        await waitForServerReady();
+        
+        // Fetch both qualifiers and excluded players
+        const [qualifiedPlayers, excludedPlayers] = await Promise.all([
+            getQualifiedPlayers(),
+            fetchUnavailablePlayers()
+        ]);
+        
+        buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers);
+    } catch (error) {
+        console.error('Error in admin modal:', error);
+        showAdminMessage('Error loading admin panel: ' + error.message, 'error');
+    }
+}
+
+async function waitForServerReady() {
+    const CHECK_INTERVAL = 5000; // 5 seconds
+    const MAX_RETRIES = 120; // 10 minutes
+    let retries = 0;
     
-    // Fetch both qualifiers and excluded players
-    const [qualifiedPlayers, excludedPlayers] = await Promise.all([
-        getQualifiedPlayers(),
-        fetchUnavailablePlayers()
-    ]);
-    
-    buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers);
+    while (retries < MAX_RETRIES) {
+        try {
+            const response = await fetch(UNAVAILABLE_PLAYERS_ENDPOINT, {
+                method: 'GET'
+            });
+            // If we get any response (even an error), server is ready
+            if (response.ok || response.status === 401 || response.status === 400) {
+                return;
+            }
+        } catch (err) {
+            // Server not ready, continue polling
+        }
+        
+        retries++;
+        if (retries >= MAX_RETRIES) {
+            throw new Error('Server did not respond within timeout period');
+        }
+        
+        // Wait before retrying
+        await new Promise(resolve => setTimeout(resolve, CHECK_INTERVAL));
+    }
 }
 
 function closeAdminModal() {
@@ -305,6 +345,9 @@ function showError(message) {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
+    // Update title immediately with current month
+    updatePageTitle();
+    
     loadQualifiers();
 
     // Admin mode event listeners
@@ -323,6 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Keyboard shortcut to open admin mode (Ctrl+Shift+A)
     document.addEventListener('keydown', (e) => {
         if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+            e.preventDefault();
             loadAdminModal();
         }
     });

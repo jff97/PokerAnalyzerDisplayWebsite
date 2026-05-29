@@ -373,6 +373,37 @@ header h1 {
     font-size: 0.9em;
 }
 
+.server-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: #667eea;
+}
+
+.server-loading p {
+    margin: 10px 0;
+}
+
+.loading-info {
+    font-size: 0.85em;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    border: 4px solid rgba(102, 126, 234, 0.2);
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .admin-password-input {
     width: 100%;
     padding: 12px;
