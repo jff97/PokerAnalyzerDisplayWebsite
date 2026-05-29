@@ -132,8 +132,20 @@ async function fetchUnavailablePlayers() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const players = await response.json();
-        return players || [];
+        const data = await response.json();
+        
+        // Handle different response structures
+        let players = [];
+        if (Array.isArray(data)) {
+            players = data;
+        } else if (data.unavailable_players && Array.isArray(data.unavailable_players)) {
+            players = data.unavailable_players;
+        } else if (data.data && Array.isArray(data.data)) {
+            players = data.data;
+        }
+        
+        // Extract player names if they're objects
+        return players.map(p => typeof p === 'string' ? p : p.player_name || p.name || p).filter(p => p);
     } catch (error) {
         console.error('Error fetching unavailable players:', error);
         showAdminMessage('Error fetching excluded players: ' + error.message, 'error');
@@ -175,13 +187,18 @@ function buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers) {
         return;
     }
     
-    const excludedSet = new Set(excludedPlayers.map(p => p.toLowerCase()));
+    // Create a normalized set of excluded players (lowercase for comparison)
+    const excludedSet = new Set(excludedPlayers.map(p => String(p).toLowerCase()));
     
     qualifiedPlayers.forEach(playerName => {
-        const isExcluded = excludedSet.has(playerName.toLowerCase());
+        const playerNameLower = String(playerName).toLowerCase();
+        const isExcluded = excludedSet.has(playerNameLower);
         
         const checkboxContainer = document.createElement('div');
         checkboxContainer.className = 'player-checkbox-item';
+        if (isExcluded) {
+            checkboxContainer.classList.add('excluded-player');
+        }
         
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
