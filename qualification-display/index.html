@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Qualifiers</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tournament Qualifiers</h1>
+            <p class="subtitle">Current Month's League Standings</p>
+        </header>
+
+        <div id="loading" class="loading">
+            <p>Loading qualifiers...</p>
+        </div>
+
+        <div id="error" class="error" style="display: none;">
+            <p id="error-message"></p>
+        </div>
+
+        <div id="qualifiers-container" class="qualifiers-container" style="display: none;">
+            <!-- Dynamically populated by JavaScript -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

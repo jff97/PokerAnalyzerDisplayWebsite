@@ -46,6 +46,9 @@ jobs:
       - name: Fetch placement distribution data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/placement-distributions" > "static/cachedLeaderboards/placement-distribution.json"
       
+      - name: Fetch tournament qualifiers data
+        run: curl -s "https://api.johnfoxweb.com/api/qualification/tournament-qualifiers" > "static/cachedLeaderboards/tournament-qualifiers.json"
+      
       #- name: Fetch community disconnectedness data
       #  run: curl -s "https://api.johnfoxweb.com/api/leaderboard/community-disconnectedness" > "static/cachedLeaderboards/community-disconnectedness.json"
       
