@@ -22,6 +22,9 @@ const passwordForm = document.getElementById('password-form');
 const playersForm = document.getElementById('players-form');
 const unlockBtn = document.getElementById('unlock-btn');
 
+// Store the validated password for use during save
+let currentAdminPassword = '';
+
 // Fetch and display qualifiers
 async function loadQualifiers() {
     try {
@@ -126,6 +129,26 @@ function displayQualifiers(data) {
 }
 
 // Admin Mode Functions
+async function validateAdminPassword(password) {
+    try {
+        const url = new URL(UNAVAILABLE_PLAYERS_ENDPOINT, window.location.origin);
+        url.searchParams.append('password', password);
+        
+        const response = await fetch(url.toString());
+        
+        // If we get a 401, password is invalid
+        if (response.status === 401) {
+            return false;
+        }
+        
+        // Any other response means password was accepted
+        return true;
+    } catch (error) {
+        console.error('Error validating password:', error);
+        return false;
+    }
+}
+
 async function fetchUnavailablePlayers() {
     try {
         const response = await fetch(UNAVAILABLE_PLAYERS_ENDPOINT);
@@ -276,6 +299,7 @@ async function waitForServerReady() {
 function closeAdminModal() {
     adminModal.style.display = 'none';
     adminPasswordInput.value = '';
+    currentAdminPassword = '';
     playersListEl.innerHTML = '';
     showAdminMessage('', '');
     passwordForm.style.display = 'block';
@@ -301,17 +325,29 @@ async function unlockAdmin() {
     }
 
     unlockBtn.disabled = true;
-    showAdminMessage('', '');
-    passwordForm.style.display = 'none';
-    playersForm.style.display = 'block';
-    playersListEl.innerHTML = `
-        <div class="server-loading">
-            <p>Loading players...</p>
-            <div class="spinner"></div>
-        </div>
-    `;
-
+    showAdminMessage('Validating password...', '');
+    
     try {
+        // Validate password first using GET request
+        const isValid = await validateAdminPassword(password);
+        if (!isValid) {
+            showAdminMessage('Invalid password', 'error');
+            unlockBtn.disabled = false;
+            return;
+        }
+        
+        // Password is valid, proceed to show players
+        currentAdminPassword = password;
+        passwordForm.style.display = 'none';
+        playersForm.style.display = 'block';
+        playersListEl.innerHTML = `
+            <div class="server-loading">
+                <p>Loading players...</p>
+                <div class="spinner"></div>
+            </div>
+        `;
+        showAdminMessage('', '');
+        
         // Wait for server to be ready and fetch qualified/excluded players
         await waitForServerReady();
         
@@ -326,21 +362,22 @@ async function unlockAdmin() {
         showAdminMessage('Error loading players: ' + error.message, 'error');
         passwordForm.style.display = 'block';
         playersForm.style.display = 'none';
+        currentAdminPassword = '';
     } finally {
         unlockBtn.disabled = false;
     }
 }
 
 async function saveExcludedPlayers() {
-    const password = adminPasswordInput.value;
+    const password = currentAdminPassword;
     if (!password) {
-        showAdminMessage('Please enter the admin password', 'error');
+        showAdminMessage('Please unlock first', 'error');
         return;
     }
 
-    // Collect all checked players
-    const checkboxes = playersListEl.querySelectorAll('.player-checkbox:checked');
-    const playerList = Array.from(checkboxes).map(cb => cb.value);
+    // Collect all checked players (including hidden checkboxes)
+    const allCheckboxes = playersListEl.querySelectorAll('.player-checkbox');
+    const playerList = Array.from(allCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
 
     saveBtn.disabled = true;
     showAdminMessage('Saving...', '');
