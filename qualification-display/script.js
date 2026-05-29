@@ -18,6 +18,9 @@ const saveBtn = document.getElementById('save-btn');
 const adminMessageEl = document.getElementById('admin-message');
 const refreshProcessingModal = document.getElementById('refresh-processing-modal');
 const processingCloseBtn = document.getElementById('processing-close-btn');
+const passwordForm = document.getElementById('password-form');
+const playersForm = document.getElementById('players-form');
+const unlockBtn = document.getElementById('unlock-btn');
 
 // Fetch and display qualifiers
 async function loadQualifiers() {
@@ -199,33 +202,12 @@ function buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers) {
 }
 
 async function loadAdminModal() {
-    // Show modal with loading state
+    // Show modal with password form
     adminModal.style.display = 'flex';
-    playersListEl.innerHTML = `
-        <div class="server-loading">
-            <p>Waking up the server...</p>
-            <p class="loading-info">This may take 3-10 minutes (free tier limitation)</p>
-            <div class="spinner"></div>
-        </div>
-    `;
+    passwordForm.style.display = 'block';
+    playersForm.style.display = 'none';
     adminPasswordInput.value = '';
     showAdminMessage('', '');
-    
-    // Wait for server to be ready
-    try {
-        await waitForServerReady();
-        
-        // Fetch both qualifiers and excluded players
-        const [qualifiedPlayers, excludedPlayers] = await Promise.all([
-            getQualifiedPlayers(),
-            fetchUnavailablePlayers()
-        ]);
-        
-        buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers);
-    } catch (error) {
-        console.error('Error in admin modal:', error);
-        showAdminMessage('Error loading admin panel: ' + error.message, 'error');
-    }
 }
 
 async function waitForServerReady() {
@@ -261,6 +243,8 @@ function closeAdminModal() {
     adminPasswordInput.value = '';
     playersListEl.innerHTML = '';
     showAdminMessage('', '');
+    passwordForm.style.display = 'block';
+    playersForm.style.display = 'none';
 }
 
 function showAdminMessage(message, type) {
@@ -272,6 +256,67 @@ function showAdminMessage(message, type) {
     adminMessageEl.textContent = message;
     adminMessageEl.className = 'admin-message ' + type;
     adminMessageEl.style.display = 'block';
+}
+
+async function unlockAdmin() {
+    const password = adminPasswordInput.value;
+    if (!password) {
+        showAdminMessage('Please enter the admin password', 'error');
+        return;
+    }
+
+    unlockBtn.disabled = true;
+    showAdminMessage('Verifying password...', '');
+
+    try {
+        // Verify password by attempting to fetch excluded players
+        const response = await fetch(UNAVAILABLE_PLAYERS_ENDPOINT, {
+            method: 'GET'
+        });
+
+        if (response.status === 401) {
+            showAdminMessage('Invalid password', 'error');
+            unlockBtn.disabled = false;
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Password is valid, now show loading and fetch data
+        showAdminMessage('', '');
+        passwordForm.style.display = 'none';
+        playersForm.style.display = 'block';
+        playersListEl.innerHTML = `
+            <div class="server-loading">
+                <p>Loading players...</p>
+                <div class="spinner"></div>
+            </div>
+        `;
+
+        // Wait for server to be ready and fetch qualified/excluded players
+        try {
+            await waitForServerReady();
+            
+            const [qualifiedPlayers, excludedPlayers] = await Promise.all([
+                getQualifiedPlayers(),
+                fetchUnavailablePlayers()
+            ]);
+            
+            buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers);
+        } catch (error) {
+            console.error('Error loading players:', error);
+            showAdminMessage('Error loading players: ' + error.message, 'error');
+            passwordForm.style.display = 'block';
+            playersForm.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Error verifying password:', error);
+        showAdminMessage('Error: ' + error.message, 'error');
+    } finally {
+        unlockBtn.disabled = false;
+    }
 }
 
 async function saveExcludedPlayers() {
@@ -355,6 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Admin mode event listeners
     adminBtn.addEventListener('click', loadAdminModal);
     modalCloseBtn.addEventListener('click', closeAdminModal);
+    unlockBtn.addEventListener('click', unlockAdmin);
     saveBtn.addEventListener('click', saveExcludedPlayers);
     refreshBtn.addEventListener('click', refreshExcludedPlayers);
     processingCloseBtn.addEventListener('click', () => {

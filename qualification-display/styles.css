@@ -497,6 +497,18 @@ header h1 {
     padding: 0;
 }
 
+#password-form {
+    padding-top: 20px;
+}
+
+#password-form .modal-buttons {
+    margin-top: 25px;
+}
+
+#players-form .form-group {
+    margin-bottom: 20px;
+}
+
 .refresh-processing-content {
     text-align: center;
     padding: 40px 30px;
