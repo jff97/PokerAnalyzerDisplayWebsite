@@ -9,7 +9,10 @@
 <body>
     <div class="container">
         <header>
-            <h1>Tournament Qualifiers</h1>
+            <div class="header-top">
+                <h1>Tournament Qualifiers</h1>
+                <button id="admin-btn" class="admin-btn">Admin Mode</button>
+            </div>
             <p class="subtitle">Current Month's League Standings</p>
         </header>
 
@@ -26,6 +29,35 @@
         </div>
     </div>
 
+    <!-- Admin Modal -->
+    <div id="admin-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Manage Excluded Players</h2>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="admin-message" class="admin-message" style="display: none;"></div>
+                
+                <div class="form-group">
+                    <label for="excluded-players">Excluded Players (one per line)</label>
+                    <textarea id="excluded-players" class="excluded-players-textarea" placeholder="Enter player names, one per line" rows="10"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="admin-password">Admin Password</label>
+                    <input type="password" id="admin-password" class="admin-password-input" placeholder="Enter admin password">
+                </div>
+
+                <div class="modal-buttons">
+                    <button id="refresh-btn" class="btn-secondary">Refresh</button>
+                    <button id="save-btn" class="btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
