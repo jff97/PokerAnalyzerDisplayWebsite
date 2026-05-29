@@ -239,25 +239,15 @@ function buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers) {
         checkbox.value = playerName;
         checkbox.checked = isExcluded;
         checkbox.className = 'player-checkbox';
-        if (isExcluded) {
-            checkbox.style.display = 'none';
-        }
-        checkboxContainer.appendChild(checkbox);
-        
-        // Add red X marker for excluded players
-        if (isExcluded) {
-            const marker = document.createElement('span');
-            marker.className = 'excluded-marker';
-            marker.textContent = '✕';
-            checkboxContainer.appendChild(marker);
-        }
         
         const label = document.createElement('label');
         label.htmlFor = `player-${playerName}`;
         label.textContent = playerName;
         label.className = 'player-label';
         
+        checkboxContainer.appendChild(checkbox);
         checkboxContainer.appendChild(label);
+        playersListEl.appendChild(checkboxContainer);
         playersListEl.appendChild(checkboxContainer);
     });
 }

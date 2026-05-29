@@ -350,11 +350,8 @@ header h1 {
     border-bottom: none;
 }
 
-.player-checkbox-item.excluded-player .excluded-marker {
-    color: #dc3545;
-    font-weight: bold;
-    font-size: 18px;
-    margin-right: 8px;
+.player-checkbox-item.excluded-player .player-checkbox {
+    accent-color: #dc3545;
 }
 
 .player-checkbox-item:last-child {
