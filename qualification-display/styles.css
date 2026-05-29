@@ -31,24 +31,33 @@ header {
 }
 
 .admin-btn {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 2px solid white;
-    padding: 10px 20px;
-    border-radius: 8px;
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    border: none;
+    width: 24px;
+    height: 24px;
+    padding: 0;
     cursor: pointer;
-    font-size: 0.95em;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.admin-btn::before {
+    content: '⚙';
 }
 
 .admin-btn:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
+    color: rgba(255, 255, 255, 1);
 }
 
 .admin-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.9);
 }
 
 header h1 {
@@ -179,6 +188,13 @@ header h1 {
     .header-top {
         flex-direction: column;
         gap: 15px;
+        position: relative;
+    }
+
+    .admin-btn {
+        position: absolute;
+        right: 0;
+        top: -30px;
     }
 
     .qualifiers-container {
@@ -309,6 +325,52 @@ header h1 {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.players-list {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+}
+
+.player-checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.player-checkbox-item:last-child {
+    border-bottom: none;
+}
+
+.player-checkbox {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.player-label {
+    cursor: pointer;
+    user-select: none;
+    flex: 1;
+}
+
+.player-label:hover {
+    color: #667eea;
+}
+
+.loading-players,
+.no-players {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+    font-size: 0.9em;
 }
 
 .admin-password-input {
