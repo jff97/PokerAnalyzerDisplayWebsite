@@ -81,6 +81,9 @@ jobs:
           fi
           echo "$BODY" > "static/cachedLeaderboards/years-top-point-players.json"
       
+      - name: Fetch all player names data
+        run: curl -s "https://api.johnfoxweb.com/api/nametools/getallplayernames" > "static/cachedLeaderboards/player-names.json"
+      
       - name: Commit and Push
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
