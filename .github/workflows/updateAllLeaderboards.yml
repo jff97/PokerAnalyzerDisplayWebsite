@@ -29,35 +29,95 @@ jobs:
         run: mkdir -p static/cachedLeaderboards
       
       - name: Fetch trueskill data
-        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/trueskill" > "static/cachedLeaderboards/trueskill.json"
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/trueskill")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Error response: $BODY"
+            exit 1
+          fi
+          echo "$BODY" > "static/cachedLeaderboards/trueskill.json"
 
       - name: Fetch players outlasted data
-        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/players-outlasted" > "static/cachedLeaderboards/players-outlasted.json"
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/players-outlasted")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Error response: $BODY"
+            exit 1
+          fi
+          echo "$BODY" > "static/cachedLeaderboards/players-outlasted.json"
 
       - name: Fetch ROI data
-        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/roi" > "static/cachedLeaderboards/roi.json"
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/roi")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Error response: $BODY"
+            exit 1
+          fi
+          echo "$BODY" > "static/cachedLeaderboards/roi.json"
 
       - name: Fetch first place data
-        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/firstplace" > "static/cachedLeaderboards/firstplace.json"
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/firstplace")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Error response: $BODY"
+            exit 1
+          fi
+          echo "$BODY" > "static/cachedLeaderboards/firstplace.json"
 
       - name: Fetch ITM percent data
-        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/itmpercent" > "static/cachedLeaderboards/itmpercent.json"
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/itmpercent")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Error response: $BODY"
+            exit 1
+          fi
+          echo "$BODY" > "static/cachedLeaderboards/itmpercent.json"
 
       - name: Fetch placement distribution data
-        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/placement-distributions" > "static/cachedLeaderboards/placement-distribution.json"
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/placement-distributions")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Error response: $BODY"
+            exit 1
+          fi
+          echo "$BODY" > "static/cachedLeaderboards/placement-distribution.json"
       
       - name: Fetch tournament qualifiers data
-        run: curl -s "https://api.johnfoxweb.com/api/qualification/tournament-qualifiers" > "static/cachedLeaderboards/tournament-qualifiers.json"
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/qualification/tournament-qualifiers")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Error response: $BODY"
+            exit 1
+          fi
+          echo "$BODY" > "static/cachedLeaderboards/tournament-qualifiers.json"
       
       #- name: Fetch community disconnectedness data
       #  run: curl -s "https://api.johnfoxweb.com/api/leaderboard/community-disconnectedness" > "static/cachedLeaderboards/community-disconnectedness.json"
       
       - name: Fetch monthly top points data
         run: |
-          TODAY_MONTH=$((10#$(date +'%m')))
-          TODAY_YEAR=$(date +'%Y')
-          echo "Month: $TODAY_MONTH, Year: $TODAY_YEAR"
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/months-top-point-players?month=$TODAY_MONTH&year=$TODAY_YEAR")
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/this-months-top-point-players")
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | sed '$d')
           echo "HTTP Status: $HTTP_CODE"
@@ -82,7 +142,16 @@ jobs:
           echo "$BODY" > "static/cachedLeaderboards/years-top-point-players.json"
       
       - name: Fetch all player names data
-        run: curl -s "https://api.johnfoxweb.com/api/nametools/getallplayernames" > "static/cachedLeaderboards/player-names.json"
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/nametools/getallplayernames")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status: $HTTP_CODE"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Error response: $BODY"
+            exit 1
+          fi
+          echo "$BODY" > "static/cachedLeaderboards/player-names.json"
       
       - name: Commit and Push
         run: |
