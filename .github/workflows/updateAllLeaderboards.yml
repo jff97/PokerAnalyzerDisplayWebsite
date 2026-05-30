@@ -29,129 +29,68 @@ jobs:
         run: mkdir -p static/cachedLeaderboards
       
       - name: Fetch trueskill data
+        continue-on-error: true
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/trueskill")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Error response: $BODY"
-            exit 1
-          fi
-          echo "$BODY" > "static/cachedLeaderboards/trueskill.json"
+          HTTP_CODE=$(curl -s -o "static/cachedLeaderboards/trueskill.json" -w "%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/trueskill")
+          [ "$HTTP_CODE" != "200" ] && echo "Failed (HTTP $HTTP_CODE)"
 
       - name: Fetch players outlasted data
+        continue-on-error: true
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/players-outlasted")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Error response: $BODY"
-            exit 1
-          fi
-          echo "$BODY" > "static/cachedLeaderboards/players-outlasted.json"
+          HTTP_CODE=$(curl -s -o "static/cachedLeaderboards/players-outlasted.json" -w "%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/players-outlasted")
+          [ "$HTTP_CODE" != "200" ] && echo "Failed (HTTP $HTTP_CODE)"
 
       - name: Fetch ROI data
+        continue-on-error: true
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/roi")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Error response: $BODY"
-            exit 1
-          fi
-          echo "$BODY" > "static/cachedLeaderboards/roi.json"
+          HTTP_CODE=$(curl -s -o "static/cachedLeaderboards/roi.json" -w "%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/roi")
+          [ "$HTTP_CODE" != "200" ] && echo "Failed (HTTP $HTTP_CODE)"
 
       - name: Fetch first place data
+        continue-on-error: true
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/firstplace")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Error response: $BODY"
-            exit 1
-          fi
-          echo "$BODY" > "static/cachedLeaderboards/firstplace.json"
+          HTTP_CODE=$(curl -s -o "static/cachedLeaderboards/firstplace.json" -w "%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/firstplace")
+          [ "$HTTP_CODE" != "200" ] && echo "Failed (HTTP $HTTP_CODE)"
 
       - name: Fetch ITM percent data
+        continue-on-error: true
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/itmpercent")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Error response: $BODY"
-            exit 1
-          fi
-          echo "$BODY" > "static/cachedLeaderboards/itmpercent.json"
+          HTTP_CODE=$(curl -s -o "static/cachedLeaderboards/itmpercent.json" -w "%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/itmpercent")
+          [ "$HTTP_CODE" != "200" ] && echo "Failed (HTTP $HTTP_CODE)"
 
       - name: Fetch placement distribution data
+        continue-on-error: true
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/placement-distributions")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Error response: $BODY"
-            exit 1
-          fi
-          echo "$BODY" > "static/cachedLeaderboards/placement-distribution.json"
+          HTTP_CODE=$(curl -s -o "static/cachedLeaderboards/placement-distribution.json" -w "%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/placement-distributions")
+          [ "$HTTP_CODE" != "200" ] && echo "Failed (HTTP $HTTP_CODE)"
       
       - name: Fetch tournament qualifiers data
+        continue-on-error: true
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/qualification/tournament-qualifiers")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Error response: $BODY"
-            exit 1
-          fi
-          echo "$BODY" > "static/cachedLeaderboards/tournament-qualifiers.json"
+          HTTP_CODE=$(curl -s -o "static/cachedLeaderboards/tournament-qualifiers.json" -w "%{http_code}" "https://api.johnfoxweb.com/api/qualification/tournament-qualifiers")
+          [ "$HTTP_CODE" != "200" ] && echo "Failed (HTTP $HTTP_CODE)"
       
       #- name: Fetch community disconnectedness data
       #  run: curl -s "https://api.johnfoxweb.com/api/leaderboard/community-disconnectedness" > "static/cachedLeaderboards/community-disconnectedness.json"
       
       - name: Fetch monthly top points data
+        continue-on-error: true
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/this-months-top-point-players")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Error response: $BODY"
-            exit 1
-          fi
-          echo "$BODY" > "static/cachedLeaderboards/months-top-point-players.json"
+          HTTP_CODE=$(curl -s -o "static/cachedLeaderboards/months-top-point-players.json" -w "%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/this-months-top-point-players")
+          [ "$HTTP_CODE" != "200" ] && echo "Failed (HTTP $HTTP_CODE)"
       
       - name: Fetch yearly top points data
+        continue-on-error: true
         run: |
           TODAY_YEAR=$(date +'%Y')
-          echo "Year: $TODAY_YEAR"
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/years-top-point-players?year=$TODAY_YEAR")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Error response: $BODY"
-            exit 1
-          fi
-          echo "$BODY" > "static/cachedLeaderboards/years-top-point-players.json"
+          HTTP_CODE=$(curl -s -o "static/cachedLeaderboards/years-top-point-players.json" -w "%{http_code}" "https://api.johnfoxweb.com/api/leaderboard/years-top-point-players?year=$TODAY_YEAR")
+          [ "$HTTP_CODE" != "200" ] && echo "Failed (HTTP $HTTP_CODE)"
       
       - name: Fetch all player names data
+        continue-on-error: true
         run: |
-          RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.johnfoxweb.com/api/nametools/getallplayernames")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Error response: $BODY"
-            exit 1
-          fi
-          echo "$BODY" > "static/cachedLeaderboards/player-names.json"
+          HTTP_CODE=$(curl -s -o "static/cachedLeaderboards/player-names.json" -w "%{http_code}" "https://api.johnfoxweb.com/api/nametools/getallplayernames")
+          [ "$HTTP_CODE" != "200" ] && echo "Failed (HTTP $HTTP_CODE)"
       
       - name: Commit and Push
         run: |
