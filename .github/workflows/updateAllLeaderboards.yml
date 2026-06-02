@@ -72,6 +72,9 @@ jobs:
       - name: Fetch automatic points bars data
         run: curl -s "https://api.johnfoxweb.com/api/automatic-points/bars" > "static/cachedLeaderboards/automatic-points-bars.json"
       
+      - name: Fetch all player names data
+        run: curl -s "https://api.johnfoxweb.com/api/nametools/getallplayernames" > "static/cachedLeaderboards/player-names.json"
+      
       - name: Commit and Push
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
