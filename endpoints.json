@@ -33,5 +33,10 @@
     "endpoint": "years-top-point-players",
     "title": "Players With Most Points This Year",
     "description": "<p>Shows players who have accumulated the most points in the current year.</p>"
+  },
+  {
+    "endpoint": "average-opponent-skill",
+    "title": "Average Opponent Skill",
+    "description": "<p>Measures the average skill level of opponents faced by each player. Players who consistently face tougher competition are ranked higher. This metric reflects competitive strength by showing who plays against the most skilled opponents.</p>${getMinimumRoundsDisclaimer()}"
   }
 ]
