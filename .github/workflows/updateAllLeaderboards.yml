@@ -38,7 +38,7 @@ jobs:
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/roi" > "static/cachedLeaderboards/roi.json"
 
       - name: Fetch ROI low round requirement data
-        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/roi-low-round-requirement?min_rounds=3" > "static/cachedLeaderboards/roi-low-round-requirement.json"
+        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/roi?min_rounds=3" > "static/cachedLeaderboards/roi-low-round-requirement.json"
 
       - name: Fetch first place data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/firstplace" > "static/cachedLeaderboards/firstplace.json"
