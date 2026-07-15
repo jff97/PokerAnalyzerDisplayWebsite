@@ -38,5 +38,10 @@
     "endpoint": "average-opponent-skill",
     "title": "Average Opponent Skill",
     "description": "<p>Measures the average skill level of opponents faced by each player. Players who consistently face tougher competition are ranked higher. This metric reflects competitive strength by showing who plays against the most skilled opponents.</p>${getMinimumRoundsDisclaimer()}"
+  },
+  {
+    "endpoint": "average-game-size-by-player",
+    "title": "Average Game Size by Player",
+    "description": "<p>Shows the average number of players in games that each player participates in. This helps identify players who tend to play in larger or smaller game formats.</p>${getMinimumRoundsDisclaimer()}"
   }
 ]

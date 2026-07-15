@@ -78,6 +78,9 @@ jobs:
       - name: Fetch average opponent skill data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/average-opponent-skill" > "static/cachedLeaderboards/average-opponent-skill.json"
       
+      - name: Fetch average game size by player data
+        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/average-game-size-by-player" > "static/cachedLeaderboards/average-game-size-by-player.json"
+      
       - name: Commit and Push
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
