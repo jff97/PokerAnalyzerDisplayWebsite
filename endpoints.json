@@ -57,6 +57,6 @@
   {
     "endpoint": "roi-low-round-requirement",
     "title": "Average Simulated ROI (Low Round Requirement)",
-    "description": "<p>World Series of Poker (WSOP) style return on investment calculations with a lower minimum rounds requirement (3 rounds). This variant includes players with fewer rounds played, allowing newer players to be ranked. Example... If you buy in for $100 and your AVG ROI is 30% then on average you will walk out with $130</p>${getNoMoneyDisclaimer()}"
+    "description": "<p>World Series of Poker (WSOP) style return on investment calculations with a lower minimum rounds requirement (6 rounds). This variant includes players with fewer rounds played, allowing newer players to be ranked. Example... If you buy in for $100 and your AVG ROI is 30% then on average you will walk out with $130</p>${getNoMoneyDisclaimer()}"
   }
 ]
