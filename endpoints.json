@@ -5,14 +5,14 @@
     "description": "<strong>Why We Use TrueSkill™ for Rankings</strong><br><br><ul><li>🏆 Considers both your placement in the round and the ranking of opponents you faced to determine your rank.</li><li>🔄 Adjusts your ranking after every game you play.</li><li>🎮 Used for competitive matchmaking in popular games like Halo, Call of Duty, Gears of War, Forza, Overwatch, Team Fortress 2, and CS:GO.</li><li><i class=\"fa-solid fa-circle-question\" style=\"color:#8bc34a;\"></i> Uncertainty value keeps it fair: new players get a temporary penalty until they have enough rounds for a reliable ranking. It is a standard deviation value from statistics.</li><li>🃏 <strong>Adjusted Ranking:</strong> Your TrueSkill rating minus 3 times your uncertainty. This accounts for TrueSkill's uncertainty about your skill level and creates a fair ranking for players with both few and many rounds played. Your uncertainty goes down with more rounds played.</li></ul><p><strong>Note:</strong> Your TrueSkill score is a <strong>relative skill estimate</strong>, not a point total or winning percentage. A higher rank indicates a stronger player, but it's not a direct measure of any one stat.</p>"
   },
   {
-    "endpoint": "players-outlasted",
-    "title": "Average Percent Players Outlasted",
-    "description": "<p>For every round a player places ahead of a percentage of other players who played that day. This leaderboard measures on average what percentage of players they place ahead of.</p>${getMinimumRoundsDisclaimer()}"
-  },
-  {
     "endpoint": "roi",
     "title": "Average Simulated ROI",
     "description": "<p>World Series of Poker (WSOP) style return on investment calculations measure profitability based on theoretical buy-in versus winnings in standard tournament-style payout structure. Example... If you buy in for $100 and your AVG ROI is 30% then on average you will walk out with $130</p>${getMinimumRoundsDisclaimer()}${getNoMoneyDisclaimer()}"
+  },
+  {
+    "endpoint": "players-outlasted",
+    "title": "Average Percent Players Outlasted",
+    "description": "<p>For every round a player places ahead of a percentage of other players who played that day. This leaderboard measures on average what percentage of players they place ahead of.</p>${getMinimumRoundsDisclaimer()}"
   },
   {
     "endpoint": "firstplace",
@@ -41,17 +41,22 @@
   },
   {
     "endpoint": "average-game-size-by-player",
-    "title": "Average Game Size by Player",
+    "title": "Average Number of Opponents Played Against",
     "description": "<p>Shows the average number of players in games that each player participates in. This helps identify players who tend to play in larger or smaller game formats.</p>${getMinimumRoundsDisclaimer()}"
   },
   {
     "endpoint": "bar-average-players",
-    "title": "Bar Average Players",
+    "title": "Average Number of Players per Bar",
     "description": "<p>Displays the average number of players at each bar location. This metric shows which venues typically host the largest or smallest games.</p>"
   },
   {
     "endpoint": "bar-average-trueskill",
-    "title": "Bar Average TrueSkill",
+    "title": "Average Player Skill per Bar",
     "description": "<p>Shows the average TrueSkill rating of players at each bar location. This metric indicates the competitive level at different venues.</p>"
+  },
+  {
+    "endpoint": "roi-low-round-requirement",
+    "title": "Average Simulated ROI (Low Round Requirement)",
+    "description": "<p>World Series of Poker (WSOP) style return on investment calculations with a lower minimum rounds requirement (3 rounds). This variant includes players with fewer rounds played, allowing newer players to be ranked. Example... If you buy in for $100 and your AVG ROI is 30% then on average you will walk out with $130</p>${getNoMoneyDisclaimer()}"
   }
 ]
