@@ -84,6 +84,9 @@ jobs:
       - name: Fetch bar average players data
         run: curl -s "https://api.johnfoxweb.com/api/leaderboard/bar-average-players" > "static/cachedLeaderboards/bar-average-players.json"
       
+      - name: Fetch bar average trueskill data
+        run: curl -s "https://api.johnfoxweb.com/api/leaderboard/bar-average-trueskill" > "static/cachedLeaderboards/bar-average-trueskill.json"
+      
       - name: Commit and Push
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"

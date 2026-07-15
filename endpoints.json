@@ -48,5 +48,10 @@
     "endpoint": "bar-average-players",
     "title": "Bar Average Players",
     "description": "<p>Displays the average number of players at each bar location. This metric shows which venues typically host the largest or smallest games.</p>"
+  },
+  {
+    "endpoint": "bar-average-trueskill",
+    "title": "Bar Average TrueSkill",
+    "description": "<p>Shows the average TrueSkill rating of players at each bar location. This metric indicates the competitive level at different venues.</p>"
   }
 ]
