@@ -94,7 +94,9 @@ function displayQualifiers(data) {
             
             // If there are 4+ qualifiers, any qualifier from position 3 onwards has tied points for 3rd
             if (qualifiers.length >= 4 && index >= 2) {
-                rankBadge.textContent = 'third';
+                rankBadge.textContent = '3';
+                rankBadge.classList.add('qualifier-rank-tied');
+                rankBadge.title = 'Tied for 3rd';
             } else {
                 rankBadge.textContent = qualifier.placement;
             }
@@ -135,6 +137,27 @@ function displayQualifiers(data) {
     });
 
     qualifiersContainerEl.style.display = 'grid';
+
+    // Shrink bar name text to fit on one line instead of wrapping and pushing the list down
+    fitAllBarHeaders();
+}
+
+// Shrink a single bar header's font size until its text fits on one line
+function fitBarHeaderText(el) {
+    const minFontSize = 14; // px floor so text stays readable
+
+    el.style.fontSize = ''; // reset to CSS default before measuring
+    let fontSize = parseFloat(window.getComputedStyle(el).fontSize);
+
+    while (el.scrollWidth > el.clientWidth && fontSize > minFontSize) {
+        fontSize -= 1;
+        el.style.fontSize = `${fontSize}px`;
+    }
+}
+
+// Re-fit every bar header currently in the DOM
+function fitAllBarHeaders() {
+    document.querySelectorAll('.bar-header').forEach(fitBarHeaderText);
 }
 
 // Admin Mode Functions
@@ -518,5 +541,12 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             loadAdminModal();
         }
+    });
+
+    // Re-fit bar header text if the window is resized
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(fitAllBarHeaders, 150);
     });
 });

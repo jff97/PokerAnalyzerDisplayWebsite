@@ -135,6 +135,9 @@ header h1 {
     padding: 20px;
     font-size: 1.4em;
     font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .qualifiers-list {
@@ -170,6 +173,11 @@ header h1 {
     font-weight: 700;
     margin-right: 15px;
     flex-shrink: 0;
+}
+
+.qualifier-rank-tied {
+    background: linear-gradient(135deg, #ffd54f 0%, #ffb300 100%);
+    color: #5c4400;
 }
 
 .qualifier-info {
