@@ -21,6 +21,7 @@ const processingCloseBtn = document.getElementById('processing-close-btn');
 const passwordForm = document.getElementById('password-form');
 const playersForm = document.getElementById('players-form');
 const unlockBtn = document.getElementById('unlock-btn');
+const passwordToggleBtn = document.getElementById('password-toggle');
 
 // Store the validated password for use during save
 let currentAdminPassword = '';
@@ -90,7 +91,13 @@ function displayQualifiers(data) {
 
             const rankBadge = document.createElement('div');
             rankBadge.className = 'qualifier-rank';
-            rankBadge.textContent = qualifier.placement;
+            
+            // If there are 4+ qualifiers, any qualifier from position 3 onwards has tied points for 3rd
+            if (qualifiers.length >= 4 && index >= 2) {
+                rankBadge.textContent = 'third';
+            } else {
+                rankBadge.textContent = qualifier.placement;
+            }
 
             const infoDiv = document.createElement('div');
             infoDiv.className = 'qualifier-info';
@@ -133,27 +140,22 @@ function displayQualifiers(data) {
 // Admin Mode Functions
 async function validateAdminPassword(password) {
     try {
-        const url = new URL(UNAVAILABLE_PLAYERS_ENDPOINT, window.location.origin);
+        const url = new URL(UNAVAILABLE_PLAYERS_ENDPOINT);
         url.searchParams.append('password', password);
         
         const response = await fetch(url.toString());
         
-        // If we get a 401, password is invalid
-        if (response.status === 401) {
-            return false;
-        }
-        
-        // Any other response means password was accepted
-        return true;
+        // Return status code for caller to handle
+        return response.status;
     } catch (error) {
         console.error('Error validating password:', error);
-        return false;
+        return 'network-error';
     }
 }
 
 async function fetchUnavailablePlayers() {
     try {
-        const url = new URL(UNAVAILABLE_PLAYERS_ENDPOINT, window.location.origin);
+        const url = new URL(UNAVAILABLE_PLAYERS_ENDPOINT);
         url.searchParams.append('password', currentAdminPassword);
         
         const response = await fetch(url.toString());
@@ -275,10 +277,8 @@ async function waitForServerReady() {
             const response = await fetch(UNAVAILABLE_PLAYERS_ENDPOINT, {
                 method: 'GET'
             });
-            // If we get any response (even an error), server is ready
-            if (response.ok || response.status === 401 || response.status === 400) {
-                return;
-            }
+            // If we get any HTTP response (any status code), server is ready
+            return;
         } catch (err) {
             // Server not ready, continue polling
         }
@@ -325,10 +325,30 @@ async function unlockAdmin() {
     showAdminMessage('Validating password...', '');
     
     try {
-        // Validate password first using GET request
-        const isValid = await validateAdminPassword(password);
-        if (!isValid) {
+        // Validate password immediately (no waiting first)
+        const status = await validateAdminPassword(password);
+        
+        // Handle different response cases
+        if (status === 'network-error') {
+            showAdminMessage('Cannot connect to server. Please check your connection and try again.', 'error');
+            unlockBtn.disabled = false;
+            return;
+        }
+        
+        if (status === 401) {
             showAdminMessage('Invalid password', 'error');
+            unlockBtn.disabled = false;
+            return;
+        }
+        
+        if (status >= 500) {
+            showAdminMessage('Server error. Please try again later.', 'error');
+            unlockBtn.disabled = false;
+            return;
+        }
+        
+        if (status < 200 || status >= 300) {
+            showAdminMessage(`Server error (${status}). Please try again.`, 'error');
             unlockBtn.disabled = false;
             return;
         }
@@ -345,9 +365,7 @@ async function unlockAdmin() {
         `;
         showAdminMessage('', '');
         
-        // Wait for server to be ready and fetch qualified/excluded players
-        await waitForServerReady();
-        
+        // Now load the player data
         const [qualifiedPlayers, excludedPlayers] = await Promise.all([
             getQualifiedPlayers(),
             fetchUnavailablePlayers()
@@ -355,8 +373,8 @@ async function unlockAdmin() {
         
         buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers);
     } catch (error) {
-        console.error('Error loading players:', error);
-        showAdminMessage('Error loading players: ' + error.message, 'error');
+        console.error('Error in admin unlock:', error);
+        showAdminMessage('Error: ' + error.message, 'error');
         passwordForm.style.display = 'block';
         playersForm.style.display = 'none';
         currentAdminPassword = '';
@@ -452,6 +470,23 @@ document.addEventListener('DOMContentLoaded', () => {
     processingCloseBtn.addEventListener('click', () => {
         refreshProcessingModal.style.display = 'none';
         loadQualifiers();
+    });
+    
+    // Password visibility toggle
+    passwordToggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isPassword = adminPasswordInput.type === 'password';
+        adminPasswordInput.type = isPassword ? 'text' : 'password';
+        
+        // Toggle icon between eye and eye-slash
+        const icon = passwordToggleBtn.querySelector('i');
+        if (isPassword) {
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
     });
     
     // Enter key support for password input
