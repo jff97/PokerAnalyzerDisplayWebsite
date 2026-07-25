@@ -1,5 +1,6 @@
 // Configuration
 const CACHE_FILE = '../static/cachedLeaderboards/tournament-qualifiers.json';
+const CACHE_FILE2 = '../static/cachedLeaderboards/player-names.json';
 const UNAVAILABLE_PLAYERS_ENDPOINT = BASE_URL + '/api/qualification/unavailable-players';
 const TOURNAMENT_NAME = 'Ultimate Showdown';
 
@@ -206,26 +207,17 @@ async function fetchUnavailablePlayers() {
     }
 }
 
-// Extract all unique qualified player names from cache
+// Extract all unique qualified player names from cache for the admin exclude player list
 async function getQualifiedPlayers() {
     try {
-        // Add cache-busting query parameter to force fresh data
-        const cacheUrl = `${CACHE_FILE}?t=${Date.now()}`;
-        const response = await fetch(cacheUrl);
+        const response = await fetch(`${CACHE_FILE2}?t=${Date.now()}`);
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
-        const playerSet = new Set();
-        
-        // Extract all player names from all bars
-        Object.values(data).forEach(qualifiers => {
-            qualifiers.forEach(q => {
-                playerSet.add(q.player_name);
-            });
-        });
-        
-        return Array.from(playerSet).sort();
+
+        const { playerNames } = await response.json();
+        return playerNames.sort();
     } catch (error) {
         console.error('Error fetching qualified players:', error);
         showAdminMessage('Error loading qualified players: ' + error.message, 'error');
@@ -236,49 +228,49 @@ async function getQualifiedPlayers() {
 // Build checkbox list for qualified and excluded players
 function buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers) {
     playersListEl.innerHTML = '';
-    
-    // Combine qualified and excluded players (remove duplicates)
-    const allPlayersSet = new Set();
-    qualifiedPlayers.forEach(p => allPlayersSet.add(String(p)));
-    excludedPlayers.forEach(p => allPlayersSet.add(String(p)));
-    
-    const allPlayers = Array.from(allPlayersSet).sort();
-    
-    if (allPlayers.length === 0) {
+
+    if (qualifiedPlayers.length === 0 && excludedPlayers.length === 0) {
         playersListEl.innerHTML = '<p class="no-players">No players found</p>';
         return;
     }
-    
-    // Create a normalized set of excluded players (lowercase for comparison)
-    const excludedSet = new Set(excludedPlayers.map(p => String(p).toLowerCase()));
-    
-    allPlayers.forEach(playerName => {
-        const playerNameLower = String(playerName).toLowerCase();
-        const isExcluded = excludedSet.has(playerNameLower);
-        
-        const checkboxContainer = document.createElement('div');
-        checkboxContainer.className = 'player-checkbox-item';
-        if (isExcluded) {
-            checkboxContainer.classList.add('excluded-player');
-        }
-        
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = `player-${playerName}`;
-        checkbox.value = playerName;
-        checkbox.checked = isExcluded;
-        checkbox.className = 'player-checkbox';
-        
-        const label = document.createElement('label');
-        label.htmlFor = `player-${playerName}`;
-        label.textContent = playerName;
-        label.className = 'player-label';
-        
-        checkboxContainer.appendChild(checkbox);
-        checkboxContainer.appendChild(label);
-        playersListEl.appendChild(checkboxContainer);
-        playersListEl.appendChild(checkboxContainer);
+
+    const qualifiedSet = new Set(qualifiedPlayers.map(String));
+
+    // Add excluded players first
+    excludedPlayers.forEach(player => {
+        addPlayerCheckbox(String(player), true);
+        qualifiedSet.delete(String(player));
     });
+
+    // Add remaining qualified players
+    Array.from(qualifiedSet)
+        .sort()
+        .forEach(player => addPlayerCheckbox(player, false));
+}
+
+function addPlayerCheckbox(playerName, isExcluded) {
+    const checkboxContainer = document.createElement('div');
+    checkboxContainer.className = 'player-checkbox-item';
+
+    if (isExcluded) {
+        checkboxContainer.classList.add('excluded-player');
+    }
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = `player-${playerName}`;
+    checkbox.value = playerName;
+    checkbox.checked = isExcluded;
+    checkbox.className = 'player-checkbox';
+
+    const label = document.createElement('label');
+    label.htmlFor = `player-${playerName}`;
+    label.textContent = playerName;
+    label.className = 'player-label';
+
+    checkboxContainer.appendChild(checkbox);
+    checkboxContainer.appendChild(label);
+    playersListEl.appendChild(checkboxContainer);
 }
 
 async function loadAdminModal() {
