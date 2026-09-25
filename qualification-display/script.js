@@ -312,6 +312,7 @@ async function loadAdminModal() {
     playersForm.style.display = 'none';
     adminPasswordInput.value = '';
     playersSearchInput.value = '';
+    filterPlayerCheckboxes('');
     showAdminMessage('', '');
 }
 
@@ -346,6 +347,7 @@ function closeAdminModal() {
     adminPasswordInput.value = '';
     currentAdminPassword = '';
     playersSearchInput.value = '';
+    filterPlayerCheckboxes('');
     playersListEl.innerHTML = '';
     showAdminMessage('', '');
     passwordForm.style.display = 'block';
