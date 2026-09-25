@@ -248,7 +248,7 @@ function buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers) {
         .sort()
         .forEach(player => addPlayerCheckbox(player, false));
 
-    filterPlayerCheckboxes(playersSearchInput.value);
+    filterPlayerCheckboxes(playersSearchInput ? playersSearchInput.value : '');
 }
 
 function addPlayerCheckbox(playerName, isExcluded) {
@@ -311,8 +311,10 @@ async function loadAdminModal() {
     passwordForm.style.display = 'block';
     playersForm.style.display = 'none';
     adminPasswordInput.value = '';
-    playersSearchInput.value = '';
-    filterPlayerCheckboxes('');
+    if (playersSearchInput) {
+        playersSearchInput.value = '';
+        filterPlayerCheckboxes('');
+    }
     showAdminMessage('', '');
 }
 
@@ -346,8 +348,10 @@ function closeAdminModal() {
     adminModal.style.display = 'none';
     adminPasswordInput.value = '';
     currentAdminPassword = '';
-    playersSearchInput.value = '';
-    filterPlayerCheckboxes('');
+    if (playersSearchInput) {
+        playersSearchInput.value = '';
+        filterPlayerCheckboxes('');
+    }
     playersListEl.innerHTML = '';
     showAdminMessage('', '');
     passwordForm.style.display = 'block';
@@ -548,9 +552,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    playersSearchInput.addEventListener('input', (e) => {
-        filterPlayerCheckboxes(e.target.value);
-    });
+    if (playersSearchInput) {
+        playersSearchInput.addEventListener('input', (e) => {
+            filterPlayerCheckboxes(e.target.value);
+        });
+    }
 
     // Close modal when clicking outside of it
     adminModal.addEventListener('click', (e) => {
