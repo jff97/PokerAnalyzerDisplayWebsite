@@ -23,6 +23,7 @@ const passwordForm = document.getElementById('password-form');
 const playersForm = document.getElementById('players-form');
 const unlockBtn = document.getElementById('unlock-btn');
 const passwordToggleBtn = document.getElementById('password-toggle');
+const playersSearchInput = document.getElementById('players-search');
 
 // Store the validated password for use during save
 let currentAdminPassword = '';
@@ -246,6 +247,8 @@ function buildPlayerCheckboxes(qualifiedPlayers, excludedPlayers) {
     Array.from(qualifiedSet)
         .sort()
         .forEach(player => addPlayerCheckbox(player, false));
+
+    filterPlayerCheckboxes(playersSearchInput.value);
 }
 
 function addPlayerCheckbox(playerName, isExcluded) {
@@ -273,12 +276,42 @@ function addPlayerCheckbox(playerName, isExcluded) {
     playersListEl.appendChild(checkboxContainer);
 }
 
+function filterPlayerCheckboxes(searchTerm) {
+    const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+    const playerItems = playersListEl.querySelectorAll('.player-checkbox-item');
+    let visibleCount = 0;
+
+    playerItems.forEach(item => {
+        const playerLabel = item.querySelector('.player-label');
+        const matchesSearch = !normalizedSearchTerm || playerLabel.textContent.toLowerCase().includes(normalizedSearchTerm);
+
+        item.style.display = matchesSearch ? 'flex' : 'none';
+
+        if (matchesSearch) {
+            visibleCount++;
+        }
+    });
+
+    let noResultsEl = playersListEl.querySelector('.no-search-results');
+    if (visibleCount === 0 && playerItems.length > 0) {
+        if (!noResultsEl) {
+            noResultsEl = document.createElement('p');
+            noResultsEl.className = 'no-players no-search-results';
+            noResultsEl.textContent = 'No players match your search';
+            playersListEl.appendChild(noResultsEl);
+        }
+    } else if (noResultsEl) {
+        noResultsEl.remove();
+    }
+}
+
 async function loadAdminModal() {
     // Show modal with password form
     adminModal.style.display = 'flex';
     passwordForm.style.display = 'block';
     playersForm.style.display = 'none';
     adminPasswordInput.value = '';
+    playersSearchInput.value = '';
     showAdminMessage('', '');
 }
 
@@ -312,6 +345,7 @@ function closeAdminModal() {
     adminModal.style.display = 'none';
     adminPasswordInput.value = '';
     currentAdminPassword = '';
+    playersSearchInput.value = '';
     playersListEl.innerHTML = '';
     showAdminMessage('', '');
     passwordForm.style.display = 'block';
@@ -510,6 +544,10 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             unlockAdmin();
         }
+    });
+
+    playersSearchInput.addEventListener('input', (e) => {
+        filterPlayerCheckboxes(e.target.value);
     });
 
     // Close modal when clicking outside of it
